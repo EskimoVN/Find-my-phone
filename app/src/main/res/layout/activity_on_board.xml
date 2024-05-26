@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_background_screen">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager_slide_intro"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/size_10dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:paddingHorizontal="@dimen/size_8dp"
+        android:layout_marginTop="@dimen/size_12dp"
+        app:layout_constraintTop_toBottomOf="@+id/view_pager_slide_intro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabBackground="@drawable/intro_banners_tab_indicator"
+        app:tabIndicatorHeight="0dp"
+        app:tabMaxWidth="@dimen/size_12dp"
+        app:tabMinWidth="@dimen/size_12dp" />
+
+    <TextView
+        android:id="@+id/button_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/size_24dp"
+        android:background="@drawable/background_button_primary"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/size_24dp"
+        android:paddingHorizontal="@dimen/size_10dp"
+        android:paddingVertical="@dimen/size_6dp"
+        android:text="@string/text_next"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

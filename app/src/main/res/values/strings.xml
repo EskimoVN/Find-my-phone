@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">TrackMyMobile</string>
+    <string name="text_content_splash">Whistle &amp; Clap find phone\nAnti phone stealer</string>
+    <string name="text_title_splash">Find my phone</string>
+    <string name="text_note_splash">This action can contain ads</string>
+    <string name="text_next">Next</string>
+    <string name="text_content_onboard_1">Whistle &amp; Clap find phone\nAnti phone stealer</string>
+    <string name="text_title_onboard_1">Clap Find Phone</string>
+    <string name="text_content_onboard_2">Whistle &amp; Clap find phone\nAnti phone stealer</string>
+    <string name="text_title_onboard_2">Keep Phone Safe</string>
+    <string name="text_content_onboard_3">Whistle &amp; Clap find phone\nAnti phone stealer</string>
+    <string name="text_title_onboard_3">Whistle Find Phone</string>
+    <string name="text_choose_language">Choose language</string>
+    <string name="hi">Hindi</string>
+    <string name="fr">French</string>
+    <string name="es">Spanish</string>
+    <string name="portugal">Portuguese</string>
+    <string name="english">English</string>
+    <string name="china">China</string>
+    <string name="france">France</string>
+    <string name="text_tab_title_find_phone">Find Phone</string>
+    <string name="text_tab_tittle_anti_theft">Anti-theft</string>
+    <string name="text_tab_tittle_lost_phone">Lost Phone</string>
+</resources>

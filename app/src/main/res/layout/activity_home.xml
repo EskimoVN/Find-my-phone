@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_background_screen"
+    tools:context=".features.home.views.HomeActivity">
+
+    <com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.LazyLoadingViewPager
+        android:id="@+id/view_pager_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tab_layout_home"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/image_background_screen" />
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout_home"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_85dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/background_tab_layout_home"
+        app:tabIconTint="@null"
+        app:tabIndicatorHeight="0dp"
+        app:tabRippleColor="@color/transparent" />
+
+</RelativeLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/size_16dp"
+    android:layout_marginTop="@dimen/size_16dp"
+    android:layout_marginBottom="@dimen/size_4dp"
+    android:background="@drawable/background_common_item"
+    android:padding="@dimen/size_16dp">
+
+    <ImageView
+        android:id="@+id/imgIconLanguage"
+        android:layout_width="@dimen/size_28dp"
+        android:layout_height="@dimen/size_28dp"
+        android:src="@drawable/ic_language_en"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNameLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="@dimen/size_10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imgIconLanguage"
+        app:layout_constraintStart_toEndOf="@+id/imgIconLanguage"
+        app:layout_constraintTop_toTopOf="@+id/imgIconLanguage"
+        tools:text="English" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

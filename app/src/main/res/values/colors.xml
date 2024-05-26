@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="main">#FF0580F4</color>
+    <color name="blue2">#FF74BCFC</color>
+    <color name="dark_blue">#FF0C2871</color>
+    <color name="violet">#FF5C64B4</color>
+    <color name="white_gray">#FFC4D4BC</color>
+    <color name="black_gray">#FFC4D4BC</color>
+    <color name="tab_layout">#FF202028</color>
+    <color name="transparent">#00000000</color>
+</resources>
