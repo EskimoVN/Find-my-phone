@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Ads</string>
+    <string name="loading_ad">Loading Ad...</string>
+    <string name="welcome_back">Welcome Back</string>
+</resources>

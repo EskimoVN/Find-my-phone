@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#007AF1</color>
+    <color name="ad_primary_color">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="txtColor">#FF000000</color>
+    <color name="red">#F44336</color>
+    <color name="startcolor">#E579F8</color>
+    <color name="darkGray">#E1E1E1</color>
+    <color name="lightgray">#F6F6F6</color>
+    <color name="inactive">#4D5BB1EA</color>
+    <color name="cardbgcolor">#555459</color>
+
+    <color name="nativeSmallAd2bgcolor">#FF000000</color>
+    <color name="nativeSmallAd2ButtonColor">#FFFFFFFF</color>
+    <color name="nativeSmallAd2ButtonTextColor">#FF000000</color>
+    <color name="nativeSmallAd2TextColor">#FFFFFFFF</color>
+
+    <color name="gray">#E1E1E1</color>
+    <color name="adbgcolor">#FDFDFD</color>
+    <color name="shimmer_holder_color">#A6A6A6</color>
+    <color name="adButtonColor">#0093F5</color>
+    <color name="lightTransparent">#C4C4C4</color>
+</resources>
