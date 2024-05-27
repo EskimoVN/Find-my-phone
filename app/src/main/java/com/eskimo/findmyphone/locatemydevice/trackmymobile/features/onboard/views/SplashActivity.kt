@@ -2,20 +2,103 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.vie
 
 import android.content.Intent
 import android.os.Bundle
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.views.LanguageActivity
+import com.google.android.gms.ads.nativead.NativeAd
+import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.interstitialAd.InterstitialAdUtil
+import com.tunv.admob.common.nativeAds.NativeAdsUtil
+import com.tunv.admob.common.openAd.OpenAdConfig
 
 class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        if (!SharedPreferencesManager.getFirstOpen()) {
-            startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
-        } else {
-            startActivity(Intent(this@SplashActivity, OnBoardActivity::class.java))
-        }
+        OpenAdConfig.disableResumeAd()
+        loadAd()
+        preloadNativeAd()
+    }
 
+    private fun preloadNativeAd() {
+        NativeAdsUtil.loadNativeAd(
+            nativeId = BuildConfig.ad_native_language,
+            context = this,
+            isAdAllowed = true,
+            adListener = object : AdCallBack() {
+                override fun onNativeAdLoad(nativeAd: NativeAd) {
+                    super.onNativeAdLoad(nativeAd)
+                    MyApplication.getApplication().getStorageCommon().nativeAdLanguage.setValue(
+                        nativeAd
+                    )
+                }
+            })
+    }
+
+    private fun loadAd() {
+        InterstitialAdUtil.loadInterstitial(context = this,
+            adId = "sfds",
+            adCallBack = object : AdCallBack() {
+                override fun onAdLoaded() {
+                    super.onAdLoaded()
+                    InterstitialAdUtil.showInterstitial(
+                        activity = this@SplashActivity,
+                        adCallBack = object : AdCallBack() {
+                            override fun onAdDismiss() {
+                                super.onAdDismiss()
+                                startMain()
+                            }
+
+                            override fun onAdFailToShow(error: Exception) {
+                                super.onAdFailToShow(error)
+                                startMain()
+                            }
+                        }
+                    )
+                }
+
+                override fun onAdFailToLoad(error: Exception) {
+                    super.onAdFailToLoad(error)
+                    OpenAdConfig.loadAdsAndShow(
+                        activity = this@SplashActivity,
+                        openAdId = BuildConfig.ads_open_app,
+                        adCallBack = object : AdCallBack() {
+                            override fun onAdDismiss() {
+                                super.onAdDismiss()
+                                startMain()
+                            }
+
+                            override fun onAdFailToShow(error: Exception) {
+                                super.onAdFailToShow(error)
+                                startMain()
+                            }
+                        }
+                    )
+                }
+
+            }
+        )
+    }
+
+    private fun startMain() {
+        if (!SharedPreferencesManager.getFirstOpen()) {
+            startActivity(
+                Intent(
+                    this@SplashActivity,
+                    HomeActivity::class.java
+                )
+            )
+        } else {
+            startActivity(
+                Intent(
+                    this@SplashActivity,
+                    LanguageActivity::class.java
+                )
+            )
+        }
     }
 }

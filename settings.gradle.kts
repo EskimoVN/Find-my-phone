@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TrackMyMobile"
 include(":app")
+include(":admob")
