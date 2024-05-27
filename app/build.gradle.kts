@@ -4,6 +4,9 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        buildConfig = true
+    }
     namespace = "com.eskimo.findmyphone.locatemydevice.trackmymobile"
     compileSdk = 34
 
@@ -36,6 +39,56 @@ android {
     viewBinding {
         enable = true
     }
+    flavorDimensions += "default"
+    productFlavors {
+        create("dev") {
+            //use id test when dev
+            manifestPlaceholders["ad_app_id"] = "ca-app-pub-3940256099942544~3347511713"
+            buildConfigField(
+                "String",
+                "ad_banner_splash",
+                "\"ca-app-pub-3940256099942544/6300978111\""
+            )
+            buildConfigField(
+                "String",
+                "ad_interstitial_splash",
+                "\"ca-app-pub-3940256099942544/1033173712\""
+            )
+            buildConfigField(
+                "String",
+                "ad_interstitial_create",
+                "\"ca-app-pub-3940256099942544/1033173712\""
+            )
+            buildConfigField("String", "ad_banner", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField(
+                "String",
+                "ads_open_resume",
+                "\"ca-app-pub-3940256099942544/9257395921\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_language",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_language_high",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_onboarding",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_onboarding_high",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField("String", "ads_open_app", "\"ca-app-pub-3940256099942544/9257395921\"")
+            buildConfigField("Boolean", "env_dev", "true")
+        }
+    }
 }
 
 dependencies {
@@ -48,11 +101,13 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation ("com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0")
+    implementation("com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0")
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging")
     implementation("org.greenrobot:eventbus:3.3.1")
+    implementation(project(":admob"))
+    implementation("com.google.android.gms:play-services-ads:23.1.0")
 }
