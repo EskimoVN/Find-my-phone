@@ -48,11 +48,15 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation ("com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0")
+    implementation("com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0")
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging")
     implementation("org.greenrobot:eventbus:3.3.1")
+
+    //ktx
+    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.fragment:fragment-ktx:1.7.1")
 }

@@ -21,4 +21,16 @@
     <string name="text_tab_title_find_phone">Find Phone</string>
     <string name="text_tab_tittle_anti_theft">Anti-theft</string>
     <string name="text_tab_tittle_lost_phone">Lost Phone</string>
+    <string name="text_whistlapone">Whistlapone</string>
+    <string name="text_here">I am here!</string>
+    <string name="text_activated">Activated</string>
+    <string name="text_content_actived">Tap to deactivate when you don’t need it</string>
+    <string name="text_deactivate">Deactivated</string>
+    <string name="text_content_deactivate">Tap to activate the feature to find phone by clapping or whistling</string>
+    <string name="text_ringtone">Ringtone</string>
+    <string name="text_volume">Volume</string>
+    <string name="text_vibration">Vibration</string>
+    <string name="text_flash_rate">Flash rate</string>
+    <string name="text_ringtone_on">Ringtone: ON</string>
+    <string name="text_ringtone_off">Ringtone: OFF</string>
 </resources>

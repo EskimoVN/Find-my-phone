@@ -6,7 +6,9 @@ import com.musicg.api.WhistleApi
 import com.musicg.wave.WaveHeader
 import java.util.LinkedList
 
-class DetectorThread(private val recorder: RecorderThread, private var clapValue: String) :
+class DetectorThread(
+    private val recorder: RecorderThread,
+) :
     Thread() {
 
     @Volatile
@@ -73,25 +75,14 @@ class DetectorThread(private val recorder: RecorderThread, private var clapValue
                     clapResultList.add(isClap)
                     if (isWhistle) numWhistles++
                     if (isClap) numClaps++
-                    clapValue = "YES"
-                    if(isWhistle == true){
-                        Log.d("LucTV", "run: true")
-                    }else {
-                        Log.d("LucTV", "run: false")
-                    }
                     if (numWhistles >= whistlePassScore) {
-                        Log.e("Sound", "Detected")
                         initBuffer()
-                        if (clapValue == "ON") {
-                            onWhistleDetected()
-                        }
+                        onWhistleDetected()
                     }
                     if (numClaps >= clapPassScore) {
                         Log.e("Sound", "Detected")
                         initBuffer()
-                        if (clapValue == "YES") {
-                            onWhistleDetected()
-                        }
+                        onClapDetected()
                     }
                 } ?: run {
                     if (whistleResultList.first) numWhistles--
@@ -108,10 +99,12 @@ class DetectorThread(private val recorder: RecorderThread, private var clapValue
     }
 
     private fun onClapDetected() {
-        Log.d("TAG", "onClapDetected: ")
+        Log.d("LucTV", "onClapDetected: $onSignalsDetectedListener")
+        onSignalsDetectedListener?.onClapDetected()
     }
 
     private fun onWhistleDetected() {
+        Log.d("LucTV", "onWhistleDetected: $onSignalsDetectedListener")
         onSignalsDetectedListener?.onWhistleDetected()
     }
 

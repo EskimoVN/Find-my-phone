@@ -1,7 +1,12 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
@@ -20,6 +25,41 @@ class HomeActivity : BaseActivity() {
         setContentView(binding.root)
         setupViewPager()
         setupTabLayout()
+        requestNotification()
+        requestCamera()
+    }
+
+    private fun requestCamera() {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestCameraLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+    private val requestCameraLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                //   shortToast(R.string.text_please_access_permission_notification)
+            }
+        }
+
+
+    private val requestPermissionNotificationLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+             //   shortToast(R.string.text_please_access_permission_notification)
+            }
+        }
+
+    private fun requestNotification() {
+        AppNotificationManager.createNotificationChannels(this)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionNotificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     private fun setupViewPager() {

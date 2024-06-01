@@ -17,4 +17,20 @@
         <item name="textAllCaps">false</item>
     </style>
 
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize|stateAlwaysHidden</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="FullscreenReminderTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
 </resources>

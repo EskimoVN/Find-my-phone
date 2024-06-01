@@ -2,6 +2,8 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.common
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.TypeFlash
 
 object SharedPreferencesManager {
     private const val SHARED_PREFERENCES_NAME = "SHARED_PREFERENCES_NAME"
@@ -9,6 +11,10 @@ object SharedPreferencesManager {
     private const val KEY_LANGUAGE_APP = "LANGUAGE_APP"
     private const val KEY_AUTO_FOCUS = "AUTO_FOCUS"
     private const val KEY_VIBRATE = "KEY_VIBRATE"
+    private const val KEY_STATE_POWER = "KEY_STATE_POWER"
+    private const val KEY_VALUE_VOLUME = "KEY_VALUE_VOLUME"
+    private const val KEY_VALUE_FLASH = "KEY_VALUE_FLASH"
+
 
     private fun getInstance(): SharedPreferences {
         return MyApplication.getApplication().getSharedPreferences(
@@ -48,4 +54,27 @@ object SharedPreferencesManager {
         return getInstance().getBoolean(KEY_VIBRATE, true)
     }
 
+    fun getStatePower(): Boolean? {
+        return getInstance().getBoolean(KEY_STATE_POWER, false)
+    }
+
+    fun setStatePower(statePower: Boolean) {
+        getInstance().edit().putBoolean(KEY_STATE_POWER, statePower).apply()
+    }
+
+    fun setValueVolume(volume: Int) {
+        getInstance().edit().putInt(KEY_VALUE_VOLUME, volume).apply()
+    }
+
+    fun getValueVolume(): Int {
+        return getInstance().getInt(KEY_VALUE_VOLUME, 50)
+    }
+
+    fun setValueFlash(flash: Int) {
+        getInstance().edit().putInt(KEY_VALUE_FLASH, flash).apply()
+    }
+
+    fun getValueFlash(): Int {
+        return getInstance().getInt(KEY_VALUE_FLASH, TypeFlash.MEDIUM.time)
+    }
 }
