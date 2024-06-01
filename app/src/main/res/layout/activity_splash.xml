@@ -43,7 +43,7 @@
         android:id="@+id/process_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/banner_view"
         android:layout_marginHorizontal="@dimen/size_24dp"
         android:layout_marginBottom="@dimen/size_32dp"
         android:indeterminate="false"
@@ -60,4 +60,10 @@
         android:gravity="center"
         android:text="@string/text_note_splash"
         android:textColor="@color/white" />
+
+    <FrameLayout
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -8,7 +8,10 @@ import com.tunv.admob.common.openAd.OpenAdManager
 
 class MyApplication : Application() {
     private lateinit var storageCommon: StorageCommon
-
+    var bannerConfig = true
+    var interSplashConfig = true
+    var nativeLanguageConfig = true
+    var nativeOnboardingConfig = true
     companion object {
         private lateinit var context: MyApplication
         fun getApplication(): MyApplication {

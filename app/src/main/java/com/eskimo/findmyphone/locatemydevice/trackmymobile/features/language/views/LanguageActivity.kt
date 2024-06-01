@@ -4,17 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityLanguageBinding
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.datas.Language
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.datas.LocaleUtils
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.OnBoardActivity
 import com.google.android.gms.ads.nativead.NativeAd
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
+import com.tunv.admob.common.openAd.OpenAdConfig
 import com.tunv.admob.common.utils.isNetworkAvailable
 
 class LanguageActivity : AppCompatActivity() {
@@ -29,10 +30,29 @@ class LanguageActivity : AppCompatActivity() {
         setupAdapter()
         setupViews()
         setupAd()
+        preloadNativeAd()
+    }
+
+    private fun preloadNativeAd() {
+        if (MyApplication.getApplication().nativeOnboardingConfig) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_onboarding,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication()
+                            .getStorageCommon().nativeAdOnboarding1.setValue(
+                                nativeAd
+                            )
+                    }
+                })
+        }
     }
 
     private fun setupAd() {
-        if (this.isNetworkAvailable()) {
+        OpenAdConfig.enableResumeAd()
+        if (this.isNetworkAvailable() && MyApplication.getApplication().nativeLanguageConfig) {
             MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
             {
                 if (it != null) {
@@ -44,20 +64,21 @@ class LanguageActivity : AppCompatActivity() {
                         adListener = object : AdCallBack() {
                             override fun onAdClick() {
                                 super.onAdClick()
-                                preloadNativeAd()
+                                reloadNativeAd()
                             }
                         })
                 }
 
             }
+        }else{
+            binding.frAds.gone()
         }
     }
 
-    private fun preloadNativeAd() {
+    private fun reloadNativeAd() {
         NativeAdsUtil.loadNativeAd(
             nativeId = BuildConfig.ad_native_language,
             context = this,
-            isAdAllowed = true,
             adListener = object : AdCallBack() {
                 override fun onNativeAdLoad(nativeAd: NativeAd) {
                     super.onNativeAdLoad(nativeAd)
@@ -70,7 +91,7 @@ class LanguageActivity : AppCompatActivity() {
 
     private fun setupViews() {
         binding.buttonNext.setOnSafeClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, OnBoardActivity::class.java))
         }
     }
 

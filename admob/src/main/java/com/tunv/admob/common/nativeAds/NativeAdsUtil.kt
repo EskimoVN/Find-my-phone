@@ -4,7 +4,6 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -98,53 +97,19 @@ object NativeAdsUtil {
 
 
     fun loadNativeAd(
-        isAdAllowed: Boolean,
         @LayoutRes loadingAdView: Int,
         adContainerView: ViewGroup,
         nativeId: String,
         context: Activity,
         adListener: AdCallBack? = null
     ) {
-        if (isAdAllowed) {
-            if (context.isNetworkAvailable()) {
-                val loadingView = LayoutInflater.from(context).inflate(loadingAdView, null, false)
-                adContainerView.removeAllViews()
-                adContainerView.addView(loadingView)
-
-                val adLoader = AdLoader.Builder(context, nativeId)
-                    .forNativeAd { nativeAd ->
-                        adListener?.onNativeAdLoad(nativeAd)
-                    }.withAdListener(object : AdListener() {
-                        override fun onAdFailedToLoad(adError: LoadAdError) {
-                            adListener?.onAdFailToLoad(Exception(adError.message))
-                        }
-
-                        override fun onAdClicked() {
-                            super.onAdClicked()
-                            adListener?.onAdClick()
-                        }
-                    }).withNativeAdOptions(
-                        NativeAdOptions.Builder().setRequestMultipleImages(true)
-                            .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_RIGHT)
-                            .setRequestCustomMuteThisAd(true).build()
-                    ).build()
-                adLoader.loadAd(AdRequest.Builder().build())
-            } else {
-                adContainerView.removeAllViews()
-                adListener?.onAdFailToShow(Exception("Internet not connected"))
-            }
-        } else {
+        if (context.isNetworkAvailable()) {
+            val loadingView = LayoutInflater.from(context).inflate(loadingAdView, null, false)
             adContainerView.removeAllViews()
-            adListener?.onAdFailToShow(Exception("Ad not allowed"))
-        }
-    }
+            adContainerView.addView(loadingView)
 
-    fun loadNativeAd(
-        isAdAllowed: Boolean, nativeId: String, context: Activity, adListener: AdCallBack? = null
-    ) {
-        if (isAdAllowed) {
-            if (context.isNetworkAvailable()) {
-                val adLoader = AdLoader.Builder(context, nativeId).forNativeAd { nativeAd ->
+            val adLoader = AdLoader.Builder(context, nativeId)
+                .forNativeAd { nativeAd ->
                     adListener?.onNativeAdLoad(nativeAd)
                 }.withAdListener(object : AdListener() {
                     override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -156,16 +121,40 @@ object NativeAdsUtil {
                         adListener?.onAdClick()
                     }
                 }).withNativeAdOptions(
-                    NativeAdOptions.Builder()
-                        .setVideoOptions(VideoOptions.Builder().setStartMuted(true).build())
-                        .build()
+                    NativeAdOptions.Builder().setRequestMultipleImages(true)
+                        .setAdChoicesPlacement(NativeAdOptions.ADCHOICES_TOP_RIGHT)
+                        .setRequestCustomMuteThisAd(true).build()
                 ).build()
-                adLoader.loadAd(AdRequest.Builder().build())
-            } else {
-                adListener?.onAdFailToShow(Exception("Internet not connected"))
-            }
+            adLoader.loadAd(AdRequest.Builder().build())
         } else {
-            adListener?.onAdFailToShow(Exception("Ad not allowed"))
+            adContainerView.removeAllViews()
+            adListener?.onAdFailToShow(Exception("Internet not connected"))
+        }
+    }
+
+    fun loadNativeAd(
+        nativeId: String, context: Activity, adListener: AdCallBack? = null
+    ) {
+        if (context.isNetworkAvailable()) {
+            val adLoader = AdLoader.Builder(context, nativeId).forNativeAd { nativeAd ->
+                adListener?.onNativeAdLoad(nativeAd)
+            }.withAdListener(object : AdListener() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    adListener?.onAdFailToLoad(Exception(adError.message))
+                }
+
+                override fun onAdClicked() {
+                    super.onAdClicked()
+                    adListener?.onAdClick()
+                }
+            }).withNativeAdOptions(
+                NativeAdOptions.Builder()
+                    .setVideoOptions(VideoOptions.Builder().setStartMuted(true).build())
+                    .build()
+            ).build()
+            adLoader.loadAd(AdRequest.Builder().build())
+        } else {
+            adListener?.onAdFailToShow(Exception("Internet not connected"))
         }
     }
 

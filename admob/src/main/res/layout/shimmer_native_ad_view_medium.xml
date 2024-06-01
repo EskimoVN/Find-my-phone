@@ -20,7 +20,6 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:orientation="horizontal"
-            android:padding="8dip"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3">
@@ -72,9 +71,9 @@
 
         <TextView
             android:id="@+id/ad_call_to_action"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_margin="10dp"
+            android:layout_marginTop="5dp"
             android:background="@color/shimmer_holder_color"
             android:gravity="center"
             android:textColor="@color/primary"
