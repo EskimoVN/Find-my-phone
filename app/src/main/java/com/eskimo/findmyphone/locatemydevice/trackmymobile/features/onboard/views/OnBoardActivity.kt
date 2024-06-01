@@ -34,6 +34,23 @@ class OnBoardActivity : BaseActivity() {
         setupImage()
         detectView()
         setupAds()
+        preloadNativeAd()
+    }
+
+    private fun preloadNativeAd() {
+        if (MyApplication.getApplication().nativeHomeConfig && this.isNetworkAvailable()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_language,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication().getStorageCommon().nativeAdHome.setValue(
+                            nativeAd
+                        )
+                    }
+                })
+        }
     }
 
     private fun setupAds() {

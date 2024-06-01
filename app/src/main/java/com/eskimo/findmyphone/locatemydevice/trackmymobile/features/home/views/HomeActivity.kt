@@ -8,14 +8,18 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityHomeBinding
 import com.google.android.material.tabs.TabLayout
+import com.tunv.admob.common.bannerAd.BannerAdUtil
+import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.openAd.OpenAdConfig
 
 
 class HomeActivity : BaseActivity() {
-    private lateinit var binding : ActivityHomeBinding
+    private lateinit var binding: ActivityHomeBinding
 
     private lateinit var homePagerAdapter: HomePagerAdapter
 
@@ -29,13 +33,30 @@ class HomeActivity : BaseActivity() {
         requestCamera()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupAds()
+    }
+
+    private fun setupAds() {
+        OpenAdConfig.enableResumeAd()
+        BannerAdUtil.showBanner(
+            binding.bannerView,
+            BuildConfig.ad_banner,
+            this,
+            object : AdCallBack() {
+
+            })
+    }
+
     private fun requestCamera() {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestCameraLauncher.launch(Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestCameraLauncher.launch(Manifest.permission.CAMERA)
         }
     }
+
     private val requestCameraLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
@@ -47,7 +68,7 @@ class HomeActivity : BaseActivity() {
     private val requestPermissionNotificationLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
-             //   shortToast(R.string.text_please_access_permission_notification)
+                //   shortToast(R.string.text_please_access_permission_notification)
             }
         }
 

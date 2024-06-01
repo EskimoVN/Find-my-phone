@@ -29,7 +29,7 @@ class LanguageActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupAdapter()
         setupViews()
-        setupAd()
+        setupAds()
         preloadNativeAd()
     }
 
@@ -50,7 +50,7 @@ class LanguageActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAd() {
+    private fun setupAds() {
         OpenAdConfig.enableResumeAd()
         if (this.isNetworkAvailable() && MyApplication.getApplication().nativeLanguageConfig) {
             MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)

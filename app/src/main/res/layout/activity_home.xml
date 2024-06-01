@@ -20,10 +20,15 @@
         android:id="@+id/tab_layout_home"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_85dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/banner_view"
         android:background="@drawable/background_tab_layout_home"
         app:tabIconTint="@null"
         app:tabIndicatorHeight="0dp"
         app:tabRippleColor="@color/transparent" />
 
+    <FrameLayout
+        android:id="@+id/banner_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -12,6 +12,7 @@ class MyApplication : Application() {
     var interSplashConfig = true
     var nativeLanguageConfig = true
     var nativeOnboardingConfig = true
+    var nativeHomeConfig = true
     companion object {
         private lateinit var context: MyApplication
         fun getApplication(): MyApplication {

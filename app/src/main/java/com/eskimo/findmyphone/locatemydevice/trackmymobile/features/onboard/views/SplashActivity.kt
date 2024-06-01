@@ -35,7 +35,6 @@ class SplashActivity : BaseActivity() {
                 delay(2000L)
                 startMain()
             }
-            startMain()
         }
         loadAd()
         preloadNativeAd()
@@ -50,6 +49,19 @@ class SplashActivity : BaseActivity() {
                     override fun onNativeAdLoad(nativeAd: NativeAd) {
                         super.onNativeAdLoad(nativeAd)
                         MyApplication.getApplication().getStorageCommon().nativeAdLanguage.setValue(
+                            nativeAd
+                        )
+                    }
+                })
+        }
+        if (SharedPreferencesManager.getFirstOpen() && MyApplication.getApplication().nativeHomeConfig && this.isNetworkAvailable()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_language,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication().getStorageCommon().nativeAdHome.setValue(
                             nativeAd
                         )
                     }

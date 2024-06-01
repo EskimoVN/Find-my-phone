@@ -11,7 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
@@ -21,6 +23,11 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.FragmentF
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.FlashModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.viewmodels.FindPhoneViewModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
+import com.google.android.gms.ads.nativead.NativeAd
+import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.nativeAds.NativeAdsUtil
+import com.tunv.admob.common.openAd.OpenAdConfig
+import com.tunv.admob.common.utils.isNetworkAvailable
 
 class FindPhoneFragment : BaseLazyInflatingFragment() {
     private lateinit var binding: FragmentFindPhoneBinding
@@ -33,7 +40,46 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         viewModel = FindPhoneViewModelFactory().create(FindPhoneViewModel::class.java)
         observerUI()
         setupViews()
+        setupAds()
+    }
 
+    private fun setupAds() {
+        OpenAdConfig.enableResumeAd()
+        if (activity!!.isNetworkAvailable() && MyApplication.getApplication().nativeHomeConfig) {
+            MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
+            {
+                if (it != null) {
+                    NativeAdsUtil.populateNativeAd(
+                        requireActivity(),
+                        binding.frAds,
+                        it,
+                        com.tunv.admob.R.layout.custom_native_admod_medium,
+                        adListener = object : AdCallBack() {
+                            override fun onAdClick() {
+                                super.onAdClick()
+                                reloadNativeAd()
+                            }
+                        })
+                }
+
+            }
+        } else {
+            binding.frAds.gone()
+        }
+    }
+
+    private fun reloadNativeAd() {
+        NativeAdsUtil.loadNativeAd(
+            nativeId = BuildConfig.ad_native_language,
+            context = requireActivity(),
+            adListener = object : AdCallBack() {
+                override fun onNativeAdLoad(nativeAd: NativeAd) {
+                    super.onNativeAdLoad(nativeAd)
+                    MyApplication.getApplication().getStorageCommon().nativeAdHome.setValue(
+                        nativeAd
+                    )
+                }
+            })
     }
 
     private fun observerUI() {
@@ -84,7 +130,7 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         }
 
         //Vibration
-        viewModel.typeVibration.observe(this){
+        viewModel.typeVibration.observe(this) {
             binding.switchValueVibration.isChecked = it!!
         }
     }
