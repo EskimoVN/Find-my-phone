@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/text_view_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/size_10dp"
+        android:layout_marginStart="@dimen/size_16dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:text="Very quick"
+        android:textSize="@dimen/size_18sp" />
+
+    <ImageView
+        android:id="@+id/button_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/text_view_type"
+        android:layout_alignBottom="@id/text_view_type"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/size_16dp"
+        android:src="@drawable/button_item_check" />
+
+    <View
+        android:layout_below="@id/text_view_type"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/boder_divider" />
+</RelativeLayout>

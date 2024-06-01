@@ -1,0 +1,9 @@
+<!-- res/drawable/custom_thumb.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/transparent"/>
+            <size android:width="16dp" android:height="16dp"/>
+        </shape>
+    </item>
+</layer-list>

@@ -2,18 +2,11 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.net.wifi.WifiManager
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts.*
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 object Extensions {
     fun generatePermissionReadStorage(): String {
@@ -69,39 +62,4 @@ object Extensions {
         }
         return true
     }
-
-    val Context.wifiManager: WifiManager
-        get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-
-    fun String.toCaps(): String {
-        return toUpperCase(Locale.ROOT)
-    }
-
-    fun String.parseStringToCalendar(): Calendar {
-        val dateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm", Locale.ENGLISH)
-        val calendar = Calendar.getInstance()
-        calendar.time = dateFormat.parse(this)!!
-        return calendar
-    }
-
-    fun Calendar.parseCalendarToString(): String {
-        val dateFormat = SimpleDateFormat("yyyyMMdd'T'HHmmss")
-        return dateFormat.format(this.time)
-    }
-
-    fun String.getLatLngFromGeoUri(): Pair<Double, Double>? {
-        val coordinatePattern = Regex("[-+]?[0-9]*\\.?[0-9]+")
-        val matches = coordinatePattern.findAll(this).map { it.value.toDouble() }.toList()
-
-        return if (matches.size == 2) {
-            Pair(matches[0], matches[1])
-        } else {
-            null
-        }
-    }
-
-//    fun Context.logEvent(eventType: String, bundle: Bundle? = null) {
-//        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-//        firebaseAnalytics.logEvent(eventType, bundle)
-//    }
 }

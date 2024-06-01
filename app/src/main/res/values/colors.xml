@@ -10,4 +10,5 @@
     <color name="black_gray">#FFC4D4BC</color>
     <color name="tab_layout">#FF202028</color>
     <color name="transparent">#00000000</color>
+    <color name="boder_divider">#FFCCCCCC</color>
 </resources>
