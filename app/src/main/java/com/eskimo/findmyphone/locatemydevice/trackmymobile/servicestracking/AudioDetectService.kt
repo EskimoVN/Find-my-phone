@@ -32,7 +32,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class AudioDetectService : Service() {
-    private lateinit var detectorThread: DetectorThread
+    private  var detectorThread: DetectorThread?= null
     private lateinit var cameraManager: CameraManager
     private var cameraId: String? = null
     private var isFlashOn = false
@@ -47,7 +47,7 @@ class AudioDetectService : Service() {
         recorderThread = RecorderThread();
         recorderThread?.startRecording()
         detectorThread = DetectorThread(recorderThread!!)
-        detectorThread.setOnSignalsDetectedListener(object : OnSignalsDetectedListener {
+        detectorThread?.setOnSignalsDetectedListener(object : OnSignalsDetectedListener {
             override fun onWhistleDetected() {
                 handleDetected(false)
             }
@@ -106,7 +106,9 @@ class AudioDetectService : Service() {
         mediaPlayer = null
         isPlayingDetect = false
         recorderThread?.stopRecording()
-        detectorThread.stopDetection()
+        detectorThread?.stopDetection()
+        recorderThread = null
+        detectorThread = null
     }
 
     private fun openAudio() {
@@ -234,7 +236,7 @@ class AudioDetectService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        detectorThread.start()
+        detectorThread?.start()
         return START_STICKY
     }
 
