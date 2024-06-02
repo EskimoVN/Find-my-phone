@@ -40,11 +40,11 @@ class ExtendedLiveData<T>() : MutableLiveData<T>() {
 
     @MainThread
     override fun removeObserver(observer: Observer<in T>) {
-        for (observerItem in observers) {
-            if (observerItem.second == observer && observerItem.first.lifecycle
-                    .currentState == Lifecycle.State.DESTROYED
-            ) {
-                observers.remove(observerItem)
+        val iterator = observers.iterator()
+        while (iterator.hasNext()) {
+            val observerItem = iterator.next()
+            if (observerItem.second == observer && observerItem.first.lifecycle.currentState == Lifecycle.State.DESTROYED) {
+                iterator.remove()
             }
         }
         super.removeObserver(observer)

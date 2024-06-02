@@ -13,6 +13,7 @@ class MyApplication : Application() {
     var nativeLanguageConfig = true
     var nativeOnboardingConfig = true
     var nativeHomeConfig = true
+    var nativeSettingConfig = true
     companion object {
         private lateinit var context: MyApplication
         fun getApplication(): MyApplication {

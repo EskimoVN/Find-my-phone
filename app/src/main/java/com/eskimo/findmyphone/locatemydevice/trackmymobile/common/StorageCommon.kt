@@ -9,4 +9,5 @@ class StorageCommon {
     var nativeAdOnboarding2 = ExtendedLiveData<NativeAd?>()
     var nativeAdOnboarding3 = ExtendedLiveData<NativeAd?>()
     var nativeAdHome = ExtendedLiveData<NativeAd?>()
+    var nativeAdSetting = ExtendedLiveData<NativeAd?>()
 }

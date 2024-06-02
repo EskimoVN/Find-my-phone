@@ -25,6 +25,8 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseLazyInf
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.FragmentFindPhoneBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.FlashModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.viewmodels.FindPhoneViewModel
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.views.LanguageActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.setting.views.SettingActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.google.android.gms.ads.nativead.NativeAd
 import com.tunv.admob.common.callback.AdCallBack
@@ -160,7 +162,7 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
     private fun endServiceDetect() {
         val notificationManager =
             requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(333 )
+        notificationManager.cancel(333)
         val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
         requireContext().stopService(serviceIntent)
     }
@@ -205,6 +207,11 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
 
         binding.switchValueVibration.setOnSafeClickListener {
             viewModel.setVibration()
+        }
+
+        binding.buttonSetting.setOnSafeClickListener {
+            val intent = Intent(requireContext(), SettingActivity::class.java)
+            startActivity(intent)
         }
     }
 

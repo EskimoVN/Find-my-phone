@@ -2,12 +2,13 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.vi
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.visible
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityLanguageBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.datas.Language
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.datas.LocaleUtils
@@ -18,15 +19,17 @@ import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
 import com.tunv.admob.common.utils.isNetworkAvailable
 
-class LanguageActivity : AppCompatActivity() {
+class LanguageActivity : BaseActivity() {
     private lateinit var binding: ActivityLanguageBinding
     private lateinit var adapter: LanguageAdapter
     private lateinit var languages: List<Language>
     private var languageSelected: String = SharedPreferencesManager.getAppLanguage()
+    private var openFromSetting = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLanguageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        openFromSetting = intent.getBooleanExtra(SharedPreferencesManager.KEY_OPEN_SETTING, false)
         setupAdapter()
         setupViews()
         setupAds()
@@ -34,7 +37,7 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     private fun preloadNativeAd() {
-        if (MyApplication.getApplication().nativeOnboardingConfig) {
+        if (MyApplication.getApplication().nativeOnboardingConfig && !openFromSetting) {
             NativeAdsUtil.loadNativeAd(
                 nativeId = BuildConfig.ad_native_onboarding,
                 context = this,
@@ -70,7 +73,7 @@ class LanguageActivity : AppCompatActivity() {
                 }
 
             }
-        }else{
+        } else {
             binding.frAds.gone()
         }
     }
@@ -90,8 +93,17 @@ class LanguageActivity : AppCompatActivity() {
     }
 
     private fun setupViews() {
+        if (openFromSetting) binding.buttonBack.visible() else binding.buttonBack.gone()
         binding.buttonNext.setOnSafeClickListener {
-            startActivity(Intent(this, OnBoardActivity::class.java))
+            SharedPreferencesManager.setAppLanguage(languageSelected)
+            if (!openFromSetting) {
+                val intent = Intent(this, OnBoardActivity::class.java)
+                startActivity(intent)
+            }
+            finish()
+        }
+        binding.buttonBack.setOnSafeClickListener {
+            finish()
         }
     }
 

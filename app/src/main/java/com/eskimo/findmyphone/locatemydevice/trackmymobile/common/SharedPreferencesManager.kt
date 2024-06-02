@@ -2,7 +2,6 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.common
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.TypeFlash
 
 object SharedPreferencesManager {
@@ -14,6 +13,7 @@ object SharedPreferencesManager {
     private const val KEY_STATE_POWER = "KEY_STATE_POWER"
     private const val KEY_VALUE_VOLUME = "KEY_VALUE_VOLUME"
     private const val KEY_VALUE_FLASH = "KEY_VALUE_FLASH"
+    const val KEY_OPEN_SETTING = "KEY_OPEN_SETTING"
 
 
     private fun getInstance(): SharedPreferences {

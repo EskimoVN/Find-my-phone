@@ -10,12 +10,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityHomeBinding
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.tabs.TabLayout
 import com.tunv.admob.common.bannerAd.BannerAdUtil
 import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
+import com.tunv.admob.common.utils.isNetworkAvailable
 
 
 class HomeActivity : BaseActivity() {
@@ -31,6 +35,22 @@ class HomeActivity : BaseActivity() {
         setupTabLayout()
         requestNotification()
         requestCamera()
+        preloadNativeAd()
+    }
+    private fun preloadNativeAd() {
+        if (MyApplication.getApplication().nativeSettingConfig && this.isNetworkAvailable()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_language,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication().getStorageCommon().nativeAdSetting.setValue(
+                            nativeAd
+                        )
+                    }
+                })
+        }
     }
 
     override fun onResume() {
