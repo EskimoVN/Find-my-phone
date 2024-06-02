@@ -35,23 +35,23 @@ class HomeActivity : BaseActivity() {
         setupTabLayout()
         requestNotification()
         requestCamera()
-        preloadNativeAd()
+//        preloadNativeAd()
     }
-    private fun preloadNativeAd() {
-        if (MyApplication.getApplication().nativeSettingConfig && this.isNetworkAvailable()) {
-            NativeAdsUtil.loadNativeAd(
-                nativeId = BuildConfig.ad_native_language,
-                context = this,
-                adListener = object : AdCallBack() {
-                    override fun onNativeAdLoad(nativeAd: NativeAd) {
-                        super.onNativeAdLoad(nativeAd)
-                        MyApplication.getApplication().getStorageCommon().nativeAdSetting.setValue(
-                            nativeAd
-                        )
-                    }
-                })
-        }
-    }
+//    private fun preloadNativeAd() {
+//        if (MyApplication.getApplication().nativeSettingConfig && this.isNetworkAvailable()) {
+//            NativeAdsUtil.loadNativeAd(
+//                nativeId = BuildConfig.ad_native_language,
+//                context = this,
+//                adListener = object : AdCallBack() {
+//                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+//                        super.onNativeAdLoad(nativeAd)
+//                        MyApplication.getApplication().getStorageCommon().nativeAdSetting.setValue(
+//                            nativeAd
+//                        )
+//                    }
+//                })
+//        }
+//    }
 
     override fun onResume() {
         super.onResume()

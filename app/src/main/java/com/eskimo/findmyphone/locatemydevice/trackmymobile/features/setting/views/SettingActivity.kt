@@ -11,6 +11,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivit
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivitySettingBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.views.LanguageActivity
 import com.google.android.gms.ads.nativead.NativeAd
+import com.tunv.admob.common.bannerAd.BannerAdUtil
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
@@ -27,6 +28,7 @@ class SettingActivity : BaseActivity() {
         preloadNativeAd()
         setupAds()
     }
+
 
     private fun preloadNativeAd() {
         if (MyApplication.getApplication().nativeLanguageConfig && this.isNetworkAvailable()) {
@@ -46,27 +48,34 @@ class SettingActivity : BaseActivity() {
 
     private fun setupAds() {
         OpenAdConfig.enableResumeAd()
-        if (this.isNetworkAvailable() && MyApplication.getApplication().nativeLanguageConfig) {
-            MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
-            {
-                if (it != null) {
-                    NativeAdsUtil.populateNativeAd(
-                        this,
-                        binding.frAds,
-                        it,
-                        com.tunv.admob.R.layout.custom_native_admod_medium,
-                        adListener = object : AdCallBack() {
-                            override fun onAdClick() {
-                                super.onAdClick()
-                                reloadNativeAd()
-                            }
-                        })
-                }
+//        if (this.isNetworkAvailable() && MyApplication.getApplication().nativeLanguageConfig) {
+//            MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
+//            {
+//                if (it != null) {
+//                    NativeAdsUtil.populateNativeAd(
+//                        this,
+//                        binding.frAds,
+//                        it,
+//                        com.tunv.admob.R.layout.custom_native_admod_medium,
+//                        adListener = object : AdCallBack() {
+//                            override fun onAdClick() {
+//                                super.onAdClick()
+//                                reloadNativeAd()
+//                            }
+//                        })
+//                }
+//
+//            }
+//        } else {
+//            binding.frAds.gone()
+//        }
+    BannerAdUtil.showBanner(
+        binding.bannerView,
+        BuildConfig.ad_banner,
+        this,
+        object : AdCallBack() {
 
-            }
-        } else {
-            binding.frAds.gone()
-        }
+        })
     }
 
     private fun reloadNativeAd() {

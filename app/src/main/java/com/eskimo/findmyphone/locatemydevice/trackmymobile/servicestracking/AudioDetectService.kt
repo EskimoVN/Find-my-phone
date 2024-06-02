@@ -147,7 +147,7 @@ class AudioDetectService : Service() {
             val notificationBuilder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.icon_power)
                 .setContentTitle("Hi, phone clapped")
-                .setContentText("I'm here, do you see me ?")
+                .setContentText("I'm here, tap to close")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSound(null)
