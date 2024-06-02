@@ -44,6 +44,7 @@ class AudioDetectService : Service() {
     private var recorderThread: RecorderThread? = null
     override fun onCreate() {
         super.onCreate()
+        Log.d("LucTV", "onCreate: $this")
         recorderThread = RecorderThread();
         recorderThread?.startRecording()
         detectorThread = DetectorThread(recorderThread!!)
@@ -149,6 +150,7 @@ class AudioDetectService : Service() {
                 .setContentText("I'm here, do you see me ?")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setSound(null)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel =
                     NotificationChannel(
