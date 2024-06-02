@@ -30,14 +30,13 @@ class SplashActivity : BaseActivity() {
         OpenAdConfig.disableResumeAd()
         if (this.isNetworkAvailable()) {
             loadAd()
+            preloadNativeAd()
         } else {
             lifecycleScope.launch {
                 delay(2000L)
                 startMain()
             }
         }
-        loadAd()
-        preloadNativeAd()
     }
 
     private fun preloadNativeAd() {
@@ -151,5 +150,6 @@ class SplashActivity : BaseActivity() {
                 )
             )
         }
+        finish()
     }
 }
