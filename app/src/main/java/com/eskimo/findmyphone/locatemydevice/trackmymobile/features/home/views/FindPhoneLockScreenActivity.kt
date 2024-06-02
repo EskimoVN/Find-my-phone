@@ -1,11 +1,11 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views
 
 import android.app.KeyguardManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
@@ -19,17 +19,17 @@ class FindPhoneLockScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFindPhoneLockScreenBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.d("LucTV", "onCreate: ")
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(20000 )
         showOnLockscreen()
         initViews()
     }
 
     private fun showOnLockscreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            Log.d("LucTV", "showOnLockscreen: 1")
             setShowWhenLocked(true)
         } else {
-            Log.d("LucTV", "showOnLockscreen: 2")
             window.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
         }
     }

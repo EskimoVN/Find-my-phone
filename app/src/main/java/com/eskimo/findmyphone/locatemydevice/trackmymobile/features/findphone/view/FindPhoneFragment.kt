@@ -1,5 +1,8 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.view
 
+import android.app.ActivityManager
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -31,6 +34,7 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
     ) {
         binding = FragmentFindPhoneBinding.bind(inflatedView!!)
         viewModel = FindPhoneViewModelFactory().create(FindPhoneViewModel::class.java)
+        endServiceDetect()
         observerUI()
         setupViews()
 
@@ -84,7 +88,7 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         }
 
         //Vibration
-        viewModel.typeVibration.observe(this){
+        viewModel.typeVibration.observe(this) {
             binding.switchValueVibration.isChecked = it!!
         }
     }
@@ -100,14 +104,29 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         }
 
 
+    private fun startServiceDetect() {
+        if (!isServiceRunning(requireContext(), AudioDetectService::class.java)) {
+            val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
+            requireContext().startService(serviceIntent)
+        }
+    }
+
     private fun endServiceDetect() {
+        val notificationManager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(333 )
         val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
         requireContext().stopService(serviceIntent)
     }
 
-    private fun startServiceDetect() {
-        val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
-        requireContext().startService(serviceIntent)
+    private fun isServiceRunning(context: Context, serviceClass: Class<*>): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
     private fun setupViews() {

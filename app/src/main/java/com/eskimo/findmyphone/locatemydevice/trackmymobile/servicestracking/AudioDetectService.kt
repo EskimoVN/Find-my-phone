@@ -1,5 +1,6 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking
 
+import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.app.Notification
 import android.app.NotificationChannel
@@ -10,14 +11,17 @@ import android.content.Context
 import android.content.Intent
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.AppNotificationManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
 import kotlinx.coroutines.CoroutineScope
@@ -35,12 +39,14 @@ class AudioDetectService : Service() {
     private var flashJob: Job? = null
     private var vibrator: Vibrator? = null
     private var vibrateJob: Job? = null
-
+    private var mediaPlayer: MediaPlayer? = null
+    private var isPlayingDetect = false
+    private var recorderThread: RecorderThread? = null
     override fun onCreate() {
         super.onCreate()
-        val recorderThread = RecorderThread();
-        recorderThread.startRecording()
-        detectorThread = DetectorThread(recorderThread)
+        recorderThread = RecorderThread();
+        recorderThread?.startRecording()
+        detectorThread = DetectorThread(recorderThread!!)
         detectorThread.setOnSignalsDetectedListener(object : OnSignalsDetectedListener {
             override fun onWhistleDetected() {
                 handleDetected(false)
@@ -57,66 +63,123 @@ class AudioDetectService : Service() {
     }
 
     private fun handleDetected(isClap: Boolean) {
-        requestCamera()
-        requestVibrate()
-        val keyguardManager =
-            MyApplication.getApplication().applicationContext.getSystemService(
-                Context.KEYGUARD_SERVICE
-            ) as KeyguardManager
-        val isDeviceLocked: Boolean =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                keyguardManager.isDeviceLocked
-            } else {
-                keyguardManager.isKeyguardLocked
-            }
-        if (isDeviceLocked) {
-            AppNotificationManager.sendLockscreenWidgetNotification(
-                context = MyApplication.getApplication().applicationContext,
-            )
-        } else {
-            sendNotification()
-        }
-    }
-
-
-    private fun sendNotification() {
-        val context = MyApplication.getApplication().applicationContext
-        val channelId = "channel_id"
-        val channelName = "Channel Name"
-        val notificationManager =
-            context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val notificationBuilder = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.icon_power)
-            .setContentTitle("Hi, phone clapped")
-            .setContentText("I'm here, do you see me ?")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel(
-                    channelId,
-                    channelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
+        if (!isPlayingDetect) {
+            isPlayingDetect = true
+            requestCamera()
+            requestVibrate()
+            openAudio()
+            val keyguardManager =
+                MyApplication.getApplication().applicationContext.getSystemService(
+                    Context.KEYGUARD_SERVICE
+                ) as KeyguardManager
+            val isDeviceLocked: Boolean =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    keyguardManager.isDeviceLocked
+                } else {
+                    keyguardManager.isKeyguardLocked
+                }
+            if (isDeviceLocked) {
+                AppNotificationManager.sendLockscreenWidgetNotification(
+                    context = MyApplication.getApplication().applicationContext,
                 )
-            notificationManager.createNotificationChannel(channel)
+            } else {
+                sendNotification()
+            }
         }
-        notificationManager.notify(333, notificationBuilder.build())
     }
 
-    private fun requestCamera() {
-        cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
+    private fun resetDataService() {
+        flashJob?.cancel()
+        flashJob = null
         try {
-            cameraId = cameraManager.cameraIdList[0]
-            startFlashing()
+            cameraId?.let { cameraManager.setTorchMode(it, false) }
+            isFlashOn = false
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
+        vibrateJob?.cancel()
+        vibrateJob = null
+        vibrator?.cancel()
+        vibrator = null
+        mediaPlayer?.stop()
+        mediaPlayer?.release()
+        mediaPlayer = null
+        isPlayingDetect = false
+        recorderThread?.stopRecording()
+        detectorThread.stopDetection()
     }
 
-    private fun startFlashing() {
+    private fun openAudio() {
+        mediaPlayer = MediaPlayer.create(
+            this,
+            R.raw.demo
+        ) // replace 'your_audio_file' with the actual file name
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.setVolume(
+            SharedPreferencesManager.getValueVolume().toFloat(),
+            SharedPreferencesManager.getValueVolume().toFloat()
+        )// Set looping
+        mediaPlayer?.start()
+    }
+
+
+    @SuppressLint("LaunchActivityFromNotification")
+    private fun sendNotification() {
+        try {
+            val intent = Intent(
+                MyApplication.getApplication().applicationContext,
+                ResetServiceBroadcastReceiver::class.java
+            )
+            val pendingIntent = PendingIntent.getBroadcast(
+                MyApplication.getApplication().applicationContext,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+            val context = MyApplication.getApplication().applicationContext
+            val channelId = "channel_id"
+            val channelName = "Channel Name"
+            val notificationManager =
+                context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val notificationBuilder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.icon_power)
+                .setContentTitle("Hi, phone clapped")
+                .setContentText("I'm here, do you see me ?")
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel =
+                    NotificationChannel(
+                        channelId,
+                        channelName,
+                        NotificationManager.IMPORTANCE_DEFAULT
+                    )
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(333, notificationBuilder.build())
+        } catch (e: Exception) {
+            Log.d("LucTV", "sendNotification: ")
+        }
+    }
+
+    private fun requestCamera() {
+        val value = SharedPreferencesManager.getValueFlash()
+        if (value != 0) {
+            cameraManager = getSystemService(CAMERA_SERVICE) as CameraManager
+            try {
+                cameraId = cameraManager.cameraIdList[0]
+                startFlashing(value)
+            } catch (e: CameraAccessException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun startFlashing(value: Int) {
         flashJob = CoroutineScope(Dispatchers.Main).launch {
             while (isActive) {
                 toggleFlashlight()
-                delay(1000L)  // Nháy đèn mỗi giây
+                delay(value.toLong())  // Nháy đèn mỗi giây
             }
         }
     }
@@ -141,7 +204,9 @@ class AudioDetectService : Service() {
             @Suppress("DEPRECATION")
             getSystemService(VIBRATOR_SERVICE) as Vibrator
         }
-        startVibrating()
+        if (SharedPreferencesManager.getVibrate()) {
+            startVibrating()
+        }
     }
 
     private fun startVibrating() {
@@ -154,16 +219,16 @@ class AudioDetectService : Service() {
     }
 
     private fun toggleVibration() {
-        val DELAY = 0
-        val VIBRATE = 1000
-        val SLEEP = 1000
-        val START = 0
-        val vibratePattern = longArrayOf(DELAY.toLong(), VIBRATE.toLong(), SLEEP.toLong())
+        val delay = 0
+        val vibrate = 1000
+        val sleep = 1000
+        val start = 0
+        val vibratePattern = longArrayOf(delay.toLong(), vibrate.toLong(), sleep.toLong())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, START))
+            vibrator?.vibrate(VibrationEffect.createWaveform(vibratePattern, start))
         } else {
-            vibrator?.vibrate(vibratePattern, START)
+            vibrator?.vibrate(vibratePattern, start)
         }
     }
 
@@ -175,17 +240,7 @@ class AudioDetectService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        flashJob?.cancel()
-        if (isFlashOn) {
-            try {
-                cameraId?.let { cameraManager.setTorchMode(it, false) }
-            } catch (e: CameraAccessException) {
-                e.printStackTrace()
-            }
-        }
-        vibrateJob?.cancel()
-        vibrator?.cancel()
-
+        resetDataService()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

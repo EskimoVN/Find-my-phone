@@ -70,7 +70,6 @@ object AppNotificationManager {
     fun sendLockscreenWidgetNotification(
         context: Context,
     ) {
-        Log.d(TAG, "sendLockscreenWidgetNotification: ")
         val powerManager = context.getSystemService(PowerManager::class.java)
         val keyguardManager = context.getSystemService(KeyguardManager::class.java)
 

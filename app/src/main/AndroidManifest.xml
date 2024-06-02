@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:name=".common.MyApplication"
@@ -58,6 +59,7 @@
         <service
             android:name=".servicestracking.AudioDetectService"
             android:exported="true" />
+        <receiver android:name=".servicestracking.ResetServiceBroadcastReceiver" />
     </application>
 
 </manifest>

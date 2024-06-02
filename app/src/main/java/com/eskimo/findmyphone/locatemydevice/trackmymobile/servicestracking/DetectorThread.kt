@@ -99,12 +99,12 @@ class DetectorThread(
     }
 
     private fun onClapDetected() {
-        Log.d("LucTV", "onClapDetected: $onSignalsDetectedListener")
+      //  Log.d("LucTV", "onClapDetected: $onSignalsDetectedListener")
         onSignalsDetectedListener?.onClapDetected()
     }
 
     private fun onWhistleDetected() {
-        Log.d("LucTV", "onWhistleDetected: $onSignalsDetectedListener")
+  //      Log.d("LucTV", "onWhistleDetected: $onSignalsDetectedListener")
         onSignalsDetectedListener?.onWhistleDetected()
     }
 
