@@ -27,6 +27,9 @@
         android:theme="@style/Theme.TrackMyMobile"
         tools:targetApi="31">
         <activity
+            android:name=".features.findphone.view.SelectRingToneActivity"
+            android:exported="false" />
+        <activity
             android:name=".features.setting.views.SettingActivity"
             android:exported="false" />
         <activity

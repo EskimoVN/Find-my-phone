@@ -1,5 +1,6 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.view
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
@@ -18,6 +19,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.getNameAndResourceRingTone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.visible
@@ -25,7 +27,6 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseLazyInf
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.FragmentFindPhoneBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.FlashModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.viewmodels.FindPhoneViewModel
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.views.LanguageActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.setting.views.SettingActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.google.android.gms.ads.nativead.NativeAd
@@ -139,6 +140,10 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         viewModel.typeVibration.observe(this) {
             binding.switchValueVibration.isChecked = it!!
         }
+
+        viewModel.idRingTone.observe(this) {
+            binding.textViewValueRingtone.text = it.getNameAndResourceRingTone().first
+        }
     }
 
     private val requestPermissionRecord =
@@ -178,6 +183,9 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
     }
 
     private fun setupViews() {
+        binding.textViewValueRingtone.setOnSafeClickListener {
+            getResultLauncher.launch(Intent(requireContext(), SelectRingToneActivity::class.java))
+        }
         binding.iconPower.setOnSafeClickListener {
             viewModel.setStatePower()
         }
@@ -212,6 +220,16 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         binding.buttonSetting.setOnSafeClickListener {
             val intent = Intent(requireContext(), SettingActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private val getResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val returnValue = data?.getIntExtra("value", 0)!!
+            viewModel.updateValueRingtone(returnValue)
         }
     }
 

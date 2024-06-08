@@ -30,11 +30,20 @@ class FindPhoneViewModel : BaseViewModel() {
     val typeVibration: LiveData<Boolean>
         get() = _typeVibration
 
+    private var _idRingtone = MutableLiveData<Int>()
+    val idRingTone: LiveData<Int>
+        get() = _idRingtone
+
     init {
         getStatePower()
         getVolume()
         getVibration()
+        getIdRingTone()
         initListTypeFlash()
+    }
+
+    private fun getIdRingTone() {
+        _idRingtone.value = SharedPreferencesManager.getIdRingTone()
     }
 
     private fun initListTypeFlash() {
@@ -90,5 +99,10 @@ class FindPhoneViewModel : BaseViewModel() {
     fun setVibration() {
         SharedPreferencesManager.setVibrate(!(_typeVibration.value)!!)
         _typeVibration.value = !_typeVibration.value!!
+    }
+
+    fun updateValueRingtone(returnValue: Int) {
+        SharedPreferencesManager.setIdRingTone(returnValue)
+        _idRingtone.value = returnValue
     }
 }

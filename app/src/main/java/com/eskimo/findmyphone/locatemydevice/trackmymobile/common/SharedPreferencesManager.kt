@@ -13,6 +13,7 @@ object SharedPreferencesManager {
     private const val KEY_STATE_POWER = "KEY_STATE_POWER"
     private const val KEY_VALUE_VOLUME = "KEY_VALUE_VOLUME"
     private const val KEY_VALUE_FLASH = "KEY_VALUE_FLASH"
+    private const val KEY_ID_RING_TONE = "KEY_ID_RING_TONE"
     const val KEY_OPEN_SETTING = "KEY_OPEN_SETTING"
 
 
@@ -76,5 +77,13 @@ object SharedPreferencesManager {
 
     fun getValueFlash(): Int {
         return getInstance().getInt(KEY_VALUE_FLASH, TypeFlash.MEDIUM.time)
+    }
+
+    fun setIdRingTone(id: Int) {
+        getInstance().edit().putInt(KEY_ID_RING_TONE, id).apply()
+    }
+
+    fun getIdRingTone(): Int {
+        return getInstance().getInt(KEY_ID_RING_TONE, 0)
     }
 }

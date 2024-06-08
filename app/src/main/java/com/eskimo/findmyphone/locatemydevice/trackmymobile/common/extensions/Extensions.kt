@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.TextView
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.RingTone
 
 object Extensions {
     fun generatePermissionReadStorage(): String {
@@ -61,5 +62,14 @@ object Extensions {
             }
         }
         return true
+    }
+
+    fun Int.getNameAndResourceRingTone(): Pair<String, Int> {
+        RingTone.values().forEach {
+            if (this == it.id) {
+                return Pair(it.nameRingTone, it.resource)
+            }
+        }
+        return Pair(RingTone.POLICE_SIREN.nameRingTone, RingTone.POLICE_SIREN.resource)
     }
 }

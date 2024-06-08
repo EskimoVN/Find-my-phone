@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.getNameAndResourceRingTone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.AppNotificationManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class AudioDetectService : Service() {
-    private  var detectorThread: DetectorThread?= null
+    private var detectorThread: DetectorThread? = null
     private lateinit var cameraManager: CameraManager
     private var cameraId: String? = null
     private var isFlashOn = false
@@ -115,7 +116,7 @@ class AudioDetectService : Service() {
     private fun openAudio() {
         mediaPlayer = MediaPlayer.create(
             this,
-            R.raw.demo
+            SharedPreferencesManager.getIdRingTone().getNameAndResourceRingTone().second
         ) // replace 'your_audio_file' with the actual file name
         mediaPlayer?.isLooping = true
         mediaPlayer?.setVolume(

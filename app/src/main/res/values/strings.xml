@@ -39,4 +39,10 @@
     <string name="policy">Policy</string>
     <string name="version">Version</string>
     <string name="more_apps">More Apps</string>
+    <string name="text_choose_sound">Choose sound</string>
+    <string name="police_siren">Police Siren</string>
+    <string name="hello_male">Hello - male</string>
+    <string name="hello_female">Hello - Female</string>
+    <string name="dog">Dog</string>
+    <string name="cat">Cat</string>
 </resources>

@@ -7,13 +7,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
 
-class FindPhoneLockScreenActivity : AppCompatActivity() {
+class FindPhoneLockScreenActivity : BaseActivity() {
     private lateinit var binding: ActivityFindPhoneLockScreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +21,7 @@ class FindPhoneLockScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(20000 )
+        notificationManager.cancel(20000)
         showOnLockscreen()
         initViews()
     }
