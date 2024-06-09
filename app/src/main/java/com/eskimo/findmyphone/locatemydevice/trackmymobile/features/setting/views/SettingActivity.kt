@@ -5,7 +5,6 @@ import android.os.Bundle
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivitySettingBinding
@@ -69,13 +68,14 @@ class SettingActivity : BaseActivity() {
 //        } else {
 //            binding.frAds.gone()
 //        }
-    BannerAdUtil.showBanner(
-        binding.bannerView,
-        BuildConfig.ad_banner,
-        this,
-        object : AdCallBack() {
+        BannerAdUtil.showBanner(
+            MyApplication.getApplication().bannerConfig,
+            binding.bannerView,
+            BuildConfig.ad_banner,
+            this,
+            object : AdCallBack() {
 
-        })
+            })
     }
 
     private fun reloadNativeAd() {

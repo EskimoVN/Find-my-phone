@@ -52,8 +52,8 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
 
     private fun setupAds() {
         OpenAdConfig.enableResumeAd()
-        if (activity!!.isNetworkAvailable() && MyApplication.getApplication().nativeHomeConfig) {
-            MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
+        if (requireActivity().isNetworkAvailable() && MyApplication.getApplication().nativeHomeConfig) {
+            MyApplication.getApplication().getStorageCommon().nativeAdHome.observe(this)
             {
                 if (it != null) {
                     NativeAdsUtil.populateNativeAd(

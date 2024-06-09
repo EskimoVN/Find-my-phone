@@ -33,14 +33,14 @@ class SplashActivity : BaseActivity() {
             preloadNativeAd()
         } else {
             lifecycleScope.launch {
-                delay(2000L)
+                delay(3000L)
                 startMain()
             }
         }
     }
 
     private fun preloadNativeAd() {
-        if (MyApplication.getApplication().nativeLanguageConfig && this.isNetworkAvailable()) {
+        if (SharedPreferencesManager.getFirstOpen() && MyApplication.getApplication().nativeLanguageConfig && this.isNetworkAvailable()) {
             NativeAdsUtil.loadNativeAd(
                 nativeId = BuildConfig.ad_native_language,
                 context = this,
@@ -52,10 +52,22 @@ class SplashActivity : BaseActivity() {
                         )
                     }
                 })
-        }
-        if (SharedPreferencesManager.getFirstOpen() && MyApplication.getApplication().nativeHomeConfig && this.isNetworkAvailable()) {
             NativeAdsUtil.loadNativeAd(
-                nativeId = BuildConfig.ad_native_language,
+                nativeId = BuildConfig.ad_native_language_2,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication()
+                            .getStorageCommon().nativeAdLanguage2.setValue(
+                                nativeAd
+                            )
+                    }
+                })
+        }
+        if (!SharedPreferencesManager.getFirstOpen() && MyApplication.getApplication().nativeHomeConfig && this.isNetworkAvailable()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_home,
                 context = this,
                 adListener = object : AdCallBack() {
                     override fun onNativeAdLoad(nativeAd: NativeAd) {
@@ -70,13 +82,14 @@ class SplashActivity : BaseActivity() {
 
     private fun loadAd() {
         BannerAdUtil.showBanner(
+            MyApplication.getApplication().bannerConfig,
             binding.bannerView,
             BuildConfig.ad_banner_splash,
             this,
             object : AdCallBack() {
 
             })
-        // sau 15s mà không load xong thì vào main luôn
+        // sau 10s mà không load xong thì vào main luôn
         var isInterstitialAdLoaded = false
         lifecycleScope.launch {
             delay(10000L)
@@ -85,7 +98,7 @@ class SplashActivity : BaseActivity() {
             }
         }
         InterstitialAdUtil.loadInterstitial(context = this,
-            adId = "sfds",
+            adId = BuildConfig.ad_interstitial_splash,
             adCallBack = object : AdCallBack() {
                 override fun onAdLoaded() {
                     super.onAdLoaded()

@@ -72,7 +72,12 @@ android {
             )
             buildConfigField(
                 "String",
-                "ad_native_language_high",
+                "ad_native_language_2",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_home",
                 "\"ca-app-pub-3940256099942544/2247696110\""
             )
             buildConfigField(

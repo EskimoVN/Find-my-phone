@@ -13,13 +13,10 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityHomeBinding
-import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.tabs.TabLayout
 import com.tunv.admob.common.bannerAd.BannerAdUtil
 import com.tunv.admob.common.callback.AdCallBack
-import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
-import com.tunv.admob.common.utils.isNetworkAvailable
 
 
 class HomeActivity : BaseActivity() {
@@ -61,6 +58,7 @@ class HomeActivity : BaseActivity() {
     private fun setupAds() {
         OpenAdConfig.enableResumeAd()
         BannerAdUtil.showBanner(
+            MyApplication.getApplication().bannerConfig,
             binding.bannerView,
             BuildConfig.ad_banner,
             this,

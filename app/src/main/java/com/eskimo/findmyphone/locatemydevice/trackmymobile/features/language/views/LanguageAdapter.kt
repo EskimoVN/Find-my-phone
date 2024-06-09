@@ -21,8 +21,8 @@ class LanguageAdapter(
 ) :
     RecyclerView.Adapter<LanguageAdapter.LanguageFirstOpenViewHolder>() {
 
-    private var selectedItem: Language =
-        languages.find { it.code == SharedPreferencesManager.getAppLanguage() } ?: languages[0]
+    private var selectedItem: Language? =
+        languages.find { it.code == SharedPreferencesManager.getAppLanguage() }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageFirstOpenViewHolder {
         return LanguageFirstOpenViewHolder(
@@ -47,7 +47,7 @@ class LanguageAdapter(
             val binding = ItemLanguageBinding.bind(itemView)
             binding.tvNameLanguage.text = data.name
             binding.imgIconLanguage.setImageResource(data.idIcon)
-            if (selectedItem.code == data.code) {
+            if (selectedItem?.code == data.code) {
                 binding.root.isSelected = true
                 binding.tvNameLanguage.setTextColor(
                     ContextCompat.getColor(
@@ -76,7 +76,7 @@ class LanguageAdapter(
             }
             binding.root.setOnSafeClickListener {
                 selectedItem = data
-                onClickItem(selectedItem)
+                onClickItem(selectedItem!!)
                 notifyDataSetChanged()
             }
         }

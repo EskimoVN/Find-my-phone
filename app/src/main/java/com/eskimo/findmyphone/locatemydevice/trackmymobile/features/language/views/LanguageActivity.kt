@@ -3,6 +3,7 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.vi
 import android.content.Intent
 import android.os.Bundle
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.Constant
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.gone
@@ -56,49 +57,97 @@ class LanguageActivity : BaseActivity() {
     private fun setupAds() {
         OpenAdConfig.enableResumeAd()
         if (this.isNetworkAvailable() && MyApplication.getApplication().nativeLanguageConfig) {
-            MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
-            {
-                if (it != null) {
-                    NativeAdsUtil.populateNativeAd(
-                        this,
-                        binding.frAds,
-                        it,
-                        com.tunv.admob.R.layout.custom_native_admod_medium,
-                        adListener = object : AdCallBack() {
-                            override fun onAdClick() {
-                                super.onAdClick()
-                                reloadNativeAd()
-                            }
-                        })
+            if (SharedPreferencesManager.getAppLanguage().isEmpty()) {
+                MyApplication.getApplication().getStorageCommon().nativeAdLanguage.observe(this)
+                {
+                    if (it != null) {
+                        NativeAdsUtil.populateNativeAd(
+                            this,
+                            binding.frAds,
+                            it,
+                            com.tunv.admob.R.layout.custom_native_admod_medium,
+                            adListener = object : AdCallBack() {
+                                override fun onAdClick() {
+                                    super.onAdClick()
+                                    reloadNativeAd()
+                                }
+                            })
+                    }
                 }
-
+            } else {
+                MyApplication.getApplication().getStorageCommon().nativeAdLanguage2.observe(this)
+                {
+                    if (it != null) {
+                        NativeAdsUtil.populateNativeAd(
+                            this,
+                            binding.frAds,
+                            it,
+                            com.tunv.admob.R.layout.custom_native_admod_medium,
+                            adListener = object : AdCallBack() {
+                                override fun onAdClick() {
+                                    super.onAdClick()
+                                    reloadNativeAd()
+                                }
+                            })
+                    }
+                }
             }
+
         } else {
             binding.frAds.gone()
         }
     }
 
     private fun reloadNativeAd() {
-        NativeAdsUtil.loadNativeAd(
-            nativeId = BuildConfig.ad_native_language,
-            context = this,
-            adListener = object : AdCallBack() {
-                override fun onNativeAdLoad(nativeAd: NativeAd) {
-                    super.onNativeAdLoad(nativeAd)
-                    MyApplication.getApplication().getStorageCommon().nativeAdLanguage.setValue(
-                        nativeAd
-                    )
-                }
-            })
+        if (SharedPreferencesManager.getAppLanguage().isEmpty()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_language,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication().getStorageCommon().nativeAdLanguage.setValue(
+                            nativeAd
+                        )
+                    }
+                })
+        } else {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_language_2,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication()
+                            .getStorageCommon().nativeAdLanguage2.setValue(
+                            nativeAd
+                        )
+                    }
+                })
+        }
+
     }
 
     private fun setupViews() {
         if (openFromSetting) binding.buttonBack.visible() else binding.buttonBack.gone()
         binding.buttonNext.setOnSafeClickListener {
-            SharedPreferencesManager.setAppLanguage(languageSelected)
             if (!openFromSetting) {
-                val intent = Intent(this, OnBoardActivity::class.java)
-                startActivity(intent)
+                if (SharedPreferencesManager.getAppLanguage().isEmpty()) {
+                    if (languageSelected.isEmpty()) {
+                        languageSelected = LocaleUtils.listLanguage[0].code
+                    }
+                    SharedPreferencesManager.setAppLanguage(languageSelected)
+                    val intent = Intent(this, LanguageActivity::class.java)
+                    intent.putExtra(
+                        Constant.KEY_DATA, languageSelected
+                    )
+                    startActivity(intent)
+                    overridePendingTransition(0, 0);
+                } else {
+                    val intent = Intent(this, OnBoardActivity::class.java)
+                    startActivity(intent)
+                }
+
             }
             finish()
         }

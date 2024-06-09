@@ -4,11 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivitySelectRingToneBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.RingToneModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.viewmodels.SelectRingtoneViewModel
+import com.tunv.admob.common.bannerAd.BannerAdUtil
+import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.openAd.OpenAdConfig
 
 class SelectRingToneActivity : BaseActivity() {
     private lateinit var binding: ActivitySelectRingToneBinding
@@ -19,6 +24,19 @@ class SelectRingToneActivity : BaseActivity() {
         binding = ActivitySelectRingToneBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initViews()
+        setupAds()
+    }
+
+    private fun setupAds() {
+        OpenAdConfig.enableResumeAd()
+        BannerAdUtil.showBanner(
+            MyApplication.getApplication().bannerConfig,
+            binding.bannerView,
+            BuildConfig.ad_banner,
+            this,
+            object : AdCallBack() {
+
+            })
     }
 
     private fun initViews() {

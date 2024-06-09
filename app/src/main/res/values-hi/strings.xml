@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TrackMyMobile</string>
+    <string name="text_tab_title_find_phone">फ़ोन खोजें</string>
+    <string name="text_tab_tittle_anti_theft">चोरी रोधी</string>
+    <string name="text_tab_tittle_lost_phone">खोया हुआ फ़ोन</string>
+</resources>

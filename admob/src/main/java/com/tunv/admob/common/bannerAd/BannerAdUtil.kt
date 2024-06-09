@@ -15,12 +15,13 @@ import com.tunv.admob.common.utils.isNetworkAvailable
 
 object BannerAdUtil {
     fun showBanner(
+        isEnable: Boolean = true,
         adContainer: ViewGroup,
         unitId: String?,
         context: Context, adCallBack: AdCallBack
     ) {
         adContainer.removeAllViews()
-        if (context.isNetworkAvailable()) {
+        if (context.isNetworkAvailable() && isEnable) {
             adContainer.addView(
                 LayoutInflater.from(context).inflate(R.layout.loading_banner_layout, null, false)
             )

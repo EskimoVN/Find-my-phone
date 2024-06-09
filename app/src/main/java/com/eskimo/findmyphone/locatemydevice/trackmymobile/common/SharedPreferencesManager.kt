@@ -36,7 +36,7 @@ object SharedPreferencesManager {
     }
 
     fun getAppLanguage(): String {
-        return getInstance().getString(KEY_LANGUAGE_APP, "en") ?: "en"
+        return getInstance().getString(KEY_LANGUAGE_APP, "") ?: ""
     }
 
     fun setAutoFocus(autoFocus: Boolean) {
