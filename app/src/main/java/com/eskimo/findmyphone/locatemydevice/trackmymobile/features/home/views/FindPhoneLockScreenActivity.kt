@@ -12,6 +12,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Ext
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 
 class FindPhoneLockScreenActivity : BaseActivity() {
     private lateinit var binding: ActivityFindPhoneLockScreenBinding
@@ -36,9 +37,19 @@ class FindPhoneLockScreenActivity : BaseActivity() {
 
     private fun initViews() {
         binding.root.setOnSafeClickListener {
+            endServiceDetect()
             startMainActivityAndFinish()
         }
     }
+
+    private fun endServiceDetect() {
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(333)
+        val serviceIntent = Intent(this, AudioDetectService::class.java)
+        stopService(serviceIntent)
+    }
+
 
     private fun startMainActivityAndFinish() {
         val intent = Intent(this, SplashActivity::class.java)

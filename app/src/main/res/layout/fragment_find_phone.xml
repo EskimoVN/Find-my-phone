@@ -26,59 +26,11 @@
         android:padding="@dimen/size_4dp"
         android:src="@drawable/icon_settings" />
 
-    <FrameLayout
-        android:id="@+id/layout_button_power"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/size_32dp">
-
-        <ImageView
-            android:id="@+id/image_background_power"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/icon_power"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/icon_power" />
-
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/text_view_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_button_power"
-        android:layout_marginTop="@dimen/size_16dp"
-        android:fontFamily="@font/poppins_semi_bold"
-        android:gravity="center"
-        android:textColor="@color/white_gray"
-        android:textSize="@dimen/size_16sp"
-        tools:text="Inactive" />
-
-    <TextView
-        android:id="@+id/text_view_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_status"
-        android:layout_marginHorizontal="@dimen/size_16dp"
-        android:layout_marginTop="@dimen/size_16dp"
-        android:fontFamily="@font/poppins_regular"
-        android:gravity="center"
-        android:textColor="@color/white_gray"
-        android:textSize="@dimen/size_16sp"
-        android:textStyle="italic"
-        tools:text="@string/text_content_deactivate" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_view_description"
+        android:layout_below="@id/text_view_title"
         android:layout_marginTop="@dimen/size_24dp">
 
         <LinearLayout
@@ -87,6 +39,54 @@
             android:orientation="vertical">
 
             <FrameLayout
+                android:layout_gravity="center"
+                android:id="@+id/layout_button_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_background_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/icon_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_power" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/text_view_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_button_power"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:gravity="center"
+                android:textColor="@color/white_gray"
+                android:textSize="@dimen/size_16sp"
+                tools:text="Inactive" />
+
+            <TextView
+                android:id="@+id/text_view_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_view_status"
+                android:layout_marginHorizontal="@dimen/size_16dp"
+                android:layout_marginTop="@dimen/size_16dp"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:textColor="@color/white_gray"
+                android:textSize="@dimen/size_16sp"
+                android:textStyle="italic"
+                tools:text="@string/text_content_deactivate" />
+
+            <FrameLayout
+                android:layout_marginTop="@dimen/size_24dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_layout_modify"

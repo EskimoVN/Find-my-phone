@@ -12,7 +12,7 @@ class FindPhoneViewModel : BaseViewModel() {
     val statePower: LiveData<Boolean>
         get() = _statePower
 
-    private var _stateModify = MutableLiveData<Boolean>(false)
+    private var _stateModify = MutableLiveData<Boolean>(true)
     val stateModify: LiveData<Boolean>
         get() = _stateModify
 

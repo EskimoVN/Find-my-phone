@@ -89,7 +89,7 @@
                 <ImageView
                     android:layout_width="@dimen/size_24dp"
                     android:layout_height="@dimen/size_24dp"
-                    android:src="@drawable/ic_language" />
+                    android:src="@drawable/image_term" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                 <ImageView
                     android:layout_width="@dimen/size_24dp"
                     android:layout_height="@dimen/size_24dp"
-                    android:src="@drawable/ic_language" />
+                    android:src="@drawable/icon_policy" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                 <ImageView
                     android:layout_width="@dimen/size_24dp"
                     android:layout_height="@dimen/size_24dp"
-                    android:src="@drawable/ic_language" />
+                    android:src="@drawable/icon_version" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -167,7 +167,7 @@
                 <ImageView
                     android:layout_width="@dimen/size_24dp"
                     android:layout_height="@dimen/size_24dp"
-                    android:src="@drawable/ic_language" />
+                    android:src="@drawable/icon_more_app" />
 
                 <TextView
                     android:layout_width="match_parent"
