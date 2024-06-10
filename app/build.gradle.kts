@@ -93,6 +93,58 @@ android {
             buildConfigField("String", "ads_open_app", "\"ca-app-pub-3940256099942544/9257395921\"")
             buildConfigField("Boolean", "env_dev", "true")
         }
+        create("prod") {
+            //use id test when dev
+            manifestPlaceholders["ad_app_id"] = "ca-app-pub-1848319716441980~9840657303"
+            buildConfigField(
+                "String",
+                "ad_banner_splash",
+                "\"ca-app-pub-1848319716441980/9724368546\""
+            )
+            buildConfigField(
+                "String",
+                "ad_interstitial_splash",
+                "\"ca-app-pub-1848319716441980/3964877032\""
+            )
+            buildConfigField(//Chưa sửa gì
+                "String",
+                "ad_interstitial_create",
+                "\"ca-app-pub-1848319716441980/3964877032\""
+            )
+            buildConfigField("String", "ad_banner", "\"ca-app-pub-1848319716441980/1071120380\"")
+            buildConfigField(
+                "String",
+                "ads_open_resume",
+                "\"ca-app-pub-1848319716441980/1247499767\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_language",
+                "\"ca-app-pub-1848319716441980/8949610409\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_language_2",
+                "\"ca-app-pub-1848319716441980/6399468681\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_home",
+                "\"ca-app-pub-1848319716441980/2384202059\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_onboarding",
+                "\"ca-app-pub-1848319716441980/7321566480\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_onboarding_high",
+                "\"ca-app-pub-1848319716441980/7321566480\""
+            )
+            buildConfigField("String", "ads_open_app", "\"ca-app-pub-1848319716441980/5521786698\"")
+            buildConfigField("Boolean", "env_dev", "false")
+        }
     }
 }
 
