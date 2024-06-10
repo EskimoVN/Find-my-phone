@@ -3,8 +3,10 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.setting.vie
 import android.content.Intent
 import android.os.Bundle
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.Constant
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.openLink
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivitySettingBinding
@@ -105,6 +107,12 @@ class SettingActivity : BaseActivity() {
         }
         binding.buttonBack.setOnSafeClickListener {
             finish()
+        }
+        binding.buttonTerm.setOnSafeClickListener {
+            openLink(Constant.URL_TERM)
+        }
+        binding.buttonPolicy.setOnSafeClickListener {
+            openLink(Constant.URL_POLICY)
         }
     }
 }

@@ -72,4 +72,9 @@ object Extensions {
         }
         return Pair(RingTone.POLICE_SIREN.nameRingTone, RingTone.POLICE_SIREN.resource)
     }
+
+    fun Activity.openLink(valueText: String) {
+        val tempIntent = Intent(Intent.ACTION_VIEW, Uri.parse(valueText))
+        this.startActivity(tempIntent)
+    }
 }
