@@ -120,8 +120,8 @@ class LanguageActivity : BaseActivity() {
                         super.onNativeAdLoad(nativeAd)
                         MyApplication.getApplication()
                             .getStorageCommon().nativeAdLanguage2.setValue(
-                            nativeAd
-                        )
+                                nativeAd
+                            )
                     }
                 })
         }
@@ -142,7 +142,7 @@ class LanguageActivity : BaseActivity() {
                         Constant.KEY_DATA, languageSelected
                     )
                     startActivity(intent)
-                    overridePendingTransition(0, 0);
+                    overridePendingTransition(0, 0)
                 } else {
                     val intent = Intent(this, OnBoardActivity::class.java)
                     startActivity(intent)
@@ -158,8 +158,19 @@ class LanguageActivity : BaseActivity() {
 
     private fun setupAdapter() {
         languages = LocaleUtils.listLanguage
-        adapter = LanguageAdapter(this, languages) {
-            languageSelected = it.code
+        adapter = LanguageAdapter(this, languages) { language ->
+            if (languageSelected.isEmpty()) {
+                languageSelected = language.code
+                SharedPreferencesManager.setAppLanguage(languageSelected)
+                val intent = Intent(this, LanguageActivity::class.java)
+                intent.putExtra(
+                    Constant.KEY_DATA, languageSelected
+                )
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+            } else {
+                languageSelected = language.code
+            }
         }
         binding.recyclerView.adapter = adapter
     }
