@@ -31,7 +31,7 @@ class HomeActivity : BaseActivity() {
         setupViewPager()
         setupTabLayout()
         requestNotification()
-        requestCamera()
+
 //        preloadNativeAd()
     }
 //    private fun preloadNativeAd() {
@@ -87,7 +87,9 @@ class HomeActivity : BaseActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 //   shortToast(R.string.text_please_access_permission_notification)
+            }else{
             }
+            requestCamera()
         }
 
     private fun requestNotification() {
@@ -97,6 +99,8 @@ class HomeActivity : BaseActivity() {
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 requestPermissionNotificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }else{
+                requestCamera()
             }
         }
     }
