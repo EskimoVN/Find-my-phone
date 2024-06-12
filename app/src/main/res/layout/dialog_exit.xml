@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/size_24dp"
+        android:background="@drawable/background_exit_dialog"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="@dimen/size_300dp"
+        android:orientation="vertical"
+        android:padding="@dimen/size_12dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:text="@string/close"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_8dp"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/are_you_sure_you_want_to_exit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18sp" />
+
+        <FrameLayout
+            android:id="@+id/frAds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/size_12dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:visibility="visible">
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/button_negative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:gravity="center"
+                android:text="@string/close"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_20sp" />
+
+            <TextView
+                android:id="@+id/button_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/size_16dp"
+                android:fontFamily="@font/poppins_semi_bold"
+                android:text="@string/exit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_20sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

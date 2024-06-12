@@ -4,7 +4,10 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -13,15 +16,19 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityHomeBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.ExitDialog
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.material.tabs.TabLayout
 import com.tunv.admob.common.bannerAd.BannerAdUtil
 import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
+import com.tunv.admob.common.utils.isNetworkAvailable
 
 
 class HomeActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
-
+    private var doubleBackToExitPressed: Boolean = false
     private lateinit var homePagerAdapter: HomePagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +38,25 @@ class HomeActivity : BaseActivity() {
         setupViewPager()
         setupTabLayout()
         requestNotification()
+        preloadNativeAd()
+    }
 
-//        preloadNativeAd()
+    private fun preloadNativeAd() {
+        if (MyApplication.getApplication().nativeExitDialog && this.isNetworkAvailable()) {
+            NativeAdsUtil.loadNativeAd(
+                nativeId = BuildConfig.ad_native_exit_dialog,
+                context = this,
+                adListener = object : AdCallBack() {
+                    override fun onNativeAdLoad(nativeAd: NativeAd) {
+                        super.onNativeAdLoad(nativeAd)
+                        MyApplication.getApplication()
+                            .getStorageCommon().nativeAdExitDialog.setValue(
+                                nativeAd
+                            )
+                    }
+                })
+        }
+
     }
 //    private fun preloadNativeAd() {
 //        if (MyApplication.getApplication().nativeSettingConfig && this.isNetworkAvailable()) {
@@ -49,6 +73,23 @@ class HomeActivity : BaseActivity() {
 //                })
 //        }
 //    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressed) {
+            ExitDialog(this@HomeActivity).show()
+        }
+
+        doubleBackToExitPressed = true
+        Toast.makeText(
+            this@HomeActivity,
+            getString(R.string.please_click_back_again_to_exit),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        Handler(Looper.getMainLooper()).postDelayed(
+            { doubleBackToExitPressed = false }, 2000
+        )
+    }
 
     override fun onResume() {
         super.onResume()
@@ -87,7 +128,7 @@ class HomeActivity : BaseActivity() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 //   shortToast(R.string.text_please_access_permission_notification)
-            }else{
+            } else {
             }
             requestCamera()
         }
@@ -99,7 +140,7 @@ class HomeActivity : BaseActivity() {
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 requestPermissionNotificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }else{
+            } else {
                 requestCamera()
             }
         }

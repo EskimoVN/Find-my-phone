@@ -45,4 +45,8 @@
     <string name="hello_female">Hello - Female</string>
     <string name="dog">Dog</string>
     <string name="cat">Cat</string>
+    <string name="close">Close</string>
+    <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
+    <string name="please_click_back_again_to_exit">Please click BACK again to exit</string>
 </resources>

@@ -19,9 +19,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    signingConfigs {
+        register("release") {
+            storeFile = file("../keys/keystore")
+            storePassword = "eskimo@2024"
+            keyAlias = "key0"
+            keyPassword = "eskimo@2024"
+        }
+    }
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -87,6 +96,11 @@ android {
             )
             buildConfigField(
                 "String",
+                "ad_native_exit_dialog",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            buildConfigField(
+                "String",
                 "ad_native_onboarding_high",
                 "\"ca-app-pub-3940256099942544/2247696110\""
             )
@@ -141,6 +155,11 @@ android {
                 "String",
                 "ad_native_onboarding_high",
                 "\"ca-app-pub-1848319716441980/7321566480\""
+            )
+            buildConfigField(
+                "String",
+                "ad_native_exit_dialog",
+                "\"ca-app-pub-1848319716441980/3378839088\""
             )
             buildConfigField("String", "ads_open_app", "\"ca-app-pub-1848319716441980/5521786698\"")
             buildConfigField("Boolean", "env_dev", "false")

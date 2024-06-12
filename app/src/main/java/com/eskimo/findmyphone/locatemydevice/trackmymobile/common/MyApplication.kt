@@ -14,6 +14,7 @@ class MyApplication : Application() {
     var nativeOnboardingConfig = true
     var nativeHomeConfig = true
     var nativeSettingConfig = true
+    var nativeExitDialog = true
     companion object {
         private lateinit var context: MyApplication
         fun getApplication(): MyApplication {
