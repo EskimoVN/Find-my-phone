@@ -130,7 +130,6 @@ class HomeActivity : BaseActivity() {
                 //   shortToast(R.string.text_please_access_permission_notification)
             } else {
             }
-            requestCamera()
         }
 
     private fun requestNotification() {
@@ -141,7 +140,6 @@ class HomeActivity : BaseActivity() {
             ) {
                 requestPermissionNotificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             } else {
-                requestCamera()
             }
         }
     }

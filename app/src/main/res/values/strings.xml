@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrackMyMobile</string>
+    <string name="app_name">EsFinder - Device Tracker</string>
     <string name="text_content_splash">Whistle &amp; Clap find phone\nAnti phone stealer</string>
     <string name="text_title_splash">Find my phone</string>
     <string name="text_note_splash">This action can contain ads</string>
@@ -49,4 +49,5 @@
     <string name="are_you_sure_you_want_to_exit">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="please_click_back_again_to_exit">Please click BACK again to exit</string>
+    <string name="text_turn_off">Turn off</string>
 </resources>

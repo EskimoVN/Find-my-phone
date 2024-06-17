@@ -39,6 +39,7 @@ class FindPhoneLockScreenActivity : BaseActivity() {
         binding.root.setOnSafeClickListener {
             endServiceDetect()
             startMainActivityAndFinish()
+            startServiceDetect()
         }
     }
 
@@ -50,17 +51,22 @@ class FindPhoneLockScreenActivity : BaseActivity() {
         stopService(serviceIntent)
     }
 
+    private fun startServiceDetect() {
+        val serviceIntent = Intent(this, AudioDetectService::class.java)
+        startService(serviceIntent)
+    }
+
 
     private fun startMainActivityAndFinish() {
-        val intent = Intent(this, SplashActivity::class.java)
-        // Set flags to clear the activity if active and start a new one
-        // Feel free to change the flags to suit your needs
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        // Put any arguments here
-        intent.putExtras(bundleOf())
+//        val intent = Intent(this, SplashActivity::class.java)
+//        // Set flags to clear the activity if active and start a new one
+//        // Feel free to change the flags to suit your needs
+//        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//        // Put any arguments here
+//        intent.putExtras(bundleOf())
         finish()
-        dismissKeyguard()
-        startActivity(intent)
+//        dismissKeyguard()
+//        startActivity(intent)
     }
 
     private fun dismissKeyguard() {
