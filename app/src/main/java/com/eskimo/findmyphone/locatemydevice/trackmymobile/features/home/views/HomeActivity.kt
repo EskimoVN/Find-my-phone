@@ -96,33 +96,18 @@ class HomeActivity : BaseActivity() {
         setupAds()
     }
 
+
     private fun setupAds() {
         OpenAdConfig.enableResumeAd()
-        BannerAdUtil.showBanner(
-            MyApplication.getApplication().bannerConfig,
-            binding.bannerView,
-            BuildConfig.ad_banner,
-            this,
-            object : AdCallBack() {
-
-            })
+//        BannerAdUtil.showBanner(
+//            MyApplication.getApplication().bannerConfig,
+//            binding.bannerView,
+//            BuildConfig.ad_banner,
+//            this,
+//            object : AdCallBack() {
+//
+//            })
     }
-
-    private fun requestCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestCameraLauncher.launch(Manifest.permission.CAMERA)
-        }
-    }
-
-    private val requestCameraLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (!isGranted) {
-                //   shortToast(R.string.text_please_access_permission_notification)
-            }
-        }
-
 
     private val requestPermissionNotificationLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->

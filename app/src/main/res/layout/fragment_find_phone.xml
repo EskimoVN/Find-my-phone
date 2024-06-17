@@ -264,9 +264,7 @@
                 <include
                     android:id="@+id/includeNative"
                     layout="@layout/shimmer_native_ad_view_medium" />
-
             </FrameLayout>
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

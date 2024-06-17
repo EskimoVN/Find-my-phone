@@ -7,12 +7,11 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import androidx.core.os.bundleOf
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
+import com.tunv.admob.common.openAd.OpenAdConfig
 
 class FindPhoneLockScreenActivity : BaseActivity() {
     private lateinit var binding: ActivityFindPhoneLockScreenBinding
@@ -23,6 +22,7 @@ class FindPhoneLockScreenActivity : BaseActivity() {
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(20000)
+        OpenAdConfig.disableResumeAd()
         showOnLockscreen()
         initViews()
     }
