@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:background="@drawable/image_background_screen"
+    android:gravity="center"
+    android:orientation="vertical"
     android:paddingHorizontal="@dimen/size_16dp"
-    android:paddingTop="@dimen/size_100dp">
+    android:paddingTop="@dimen/size_16dp"
+    tools:background="@drawable/image_background_screen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image_view_slide_intro"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
             tools:src="@drawable/image_onboard_1" />
 
         <TextView
@@ -28,10 +31,10 @@
             android:layout_marginTop="@dimen/size_28dp"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
-            tools:text="@string/text_title_splash"
             android:textColor="@color/white"
             android:textSize="@dimen/size_32sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="@string/text_title_splash" />
 
 
         <TextView
@@ -41,9 +44,9 @@
             android:layout_marginTop="@dimen/size_12dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            tools:text="@string/text_content_splash"
             android:paddingHorizontal="@dimen/size_24dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_18sp" />
+            android:textSize="@dimen/size_18sp"
+            tools:text="@string/text_content_splash" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

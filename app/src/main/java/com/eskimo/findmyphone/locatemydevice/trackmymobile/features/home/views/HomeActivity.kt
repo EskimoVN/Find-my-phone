@@ -1,6 +1,7 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -74,21 +75,22 @@ class HomeActivity : BaseActivity() {
 //        }
 //    }
 
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         if (doubleBackToExitPressed) {
             ExitDialog(this@HomeActivity).show()
+        } else {
+            doubleBackToExitPressed = true
+            Toast.makeText(
+                this@HomeActivity,
+                getString(R.string.please_click_back_again_to_exit),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            Handler(Looper.getMainLooper()).postDelayed(
+                { doubleBackToExitPressed = false }, 2000
+            )
         }
-
-        doubleBackToExitPressed = true
-        Toast.makeText(
-            this@HomeActivity,
-            getString(R.string.please_click_back_again_to_exit),
-            Toast.LENGTH_SHORT
-        ).show()
-
-        Handler(Looper.getMainLooper()).postDelayed(
-            { doubleBackToExitPressed = false }, 2000
-        )
     }
 
     override fun onResume() {

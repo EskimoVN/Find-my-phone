@@ -13,7 +13,6 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Ext
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.DialogExitBinding
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
-import kotlin.system.exitProcess
 
 
 class ExitDialog(
@@ -48,7 +47,8 @@ class ExitDialog(
         }
         binding.buttonPositive.setOnSafeClickListener {
             dismiss()
-            exitProcess(0)
+            activity.moveTaskToBack(true)
+            activity.finishAffinity()
         }
     }
 
