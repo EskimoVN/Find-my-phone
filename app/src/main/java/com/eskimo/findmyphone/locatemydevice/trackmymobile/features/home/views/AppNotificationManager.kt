@@ -34,6 +34,7 @@ object AppNotificationManager {
             val descriptionText = DefaultNotificationChannelDesc
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(DefaultNotificationChannelId, name, importance)
+            mChannel.setSound(null,null)
             mChannel.description = descriptionText
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.

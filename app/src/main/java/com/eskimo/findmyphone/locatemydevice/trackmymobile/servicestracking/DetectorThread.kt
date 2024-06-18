@@ -19,9 +19,9 @@ class DetectorThread(
     private val waveHeader: WaveHeader
     private val whistleApi: WhistleApi
     private val clapApi: ClapApi
-    private val whistleCheckLength = 1
+    private val whistleCheckLength = 3
     private val clapCheckLength = 1
-    private val whistlePassScore = 1
+    private val whistlePassScore = 3
     private val clapPassScore = 1
     private val whistleResultList = LinkedList<Boolean>()
     private val clapResultList = LinkedList<Boolean>()

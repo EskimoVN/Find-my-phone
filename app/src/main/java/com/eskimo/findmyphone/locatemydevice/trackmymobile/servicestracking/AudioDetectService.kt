@@ -45,7 +45,6 @@ class AudioDetectService : Service() {
     private var recorderThread: RecorderThread? = null
     override fun onCreate() {
         super.onCreate()
-        Log.d("LucTV", "onCreate: $this")
         recorderThread = RecorderThread();
         recorderThread?.startRecording()
         detectorThread = DetectorThread(recorderThread!!)
@@ -159,6 +158,7 @@ class AudioDetectService : Service() {
                         channelName,
                         NotificationManager.IMPORTANCE_DEFAULT
                     )
+                channel.setSound(null, null)
                 notificationManager.createNotificationChannel(channel)
             }
             notificationManager.notify(333, notificationBuilder.build())
@@ -260,6 +260,7 @@ class AudioDetectService : Service() {
                 "Audio Detect Service Channel",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
+            channel.setSound(null, null)
             val manager = getSystemService(NotificationManager::class.java)
             manager?.createNotificationChannel(channel)
         }
@@ -275,6 +276,7 @@ class AudioDetectService : Service() {
             .setContentText("Listening for audio events")
             .setSmallIcon(R.drawable.icon_settings)
             .setContentIntent(pendingIntent)
+            .setSound(null)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setOngoing(true)  // Makes the notification non-dismissible
             .setPriority(NotificationCompat.PRIORITY_HIGH)  // For higher visibility
