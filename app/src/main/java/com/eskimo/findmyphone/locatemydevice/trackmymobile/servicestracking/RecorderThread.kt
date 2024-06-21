@@ -58,7 +58,9 @@ class RecorderThread : Thread() {
     }
 
     override fun run() {
-        startRecording()
+        while (isRecording) {
+            startRecording()
+        }
     }
 
     override fun interrupt() {

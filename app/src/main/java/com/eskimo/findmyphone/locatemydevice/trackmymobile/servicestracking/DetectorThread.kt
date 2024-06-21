@@ -8,11 +8,13 @@ import java.util.LinkedList
 
 class DetectorThread(
     private val recorder: RecorderThread,
-) :
-    Thread() {
+) : Thread() {
 
     @Volatile
     private var _thread: Thread? = null
+
+    @Volatile
+    private var running = true
     private var numWhistles = 0
     private var numClaps = 0
     private var onSignalsDetectedListener: OnSignalsDetectedListener? = null
@@ -20,7 +22,7 @@ class DetectorThread(
     private val whistleApi: WhistleApi
     private val clapApi: ClapApi
     private val whistleCheckLength = 3
-    private val clapCheckLength = 1
+    private val clapCheckLength = 3
     private val whistlePassScore = 3
     private val clapPassScore = 1
     private val whistleResultList = LinkedList<Boolean>()
@@ -50,47 +52,55 @@ class DetectorThread(
     }
 
     override fun start() {
-        _thread = Thread(this)
-        _thread?.start()
+        if (_thread == null) {
+            _thread = Thread(this)
+            running = true
+            _thread?.start()
+        }
     }
 
     fun stopDetection() {
+        running = false
+        _thread?.interrupt()
         _thread = null
+
     }
 
     override fun run() {
         try {
             initBuffer()
-            val currentThread = Thread.currentThread()
-            while (_thread == currentThread) {
-                val frameBytes = recorder.getFrameBytes()
-                frameBytes?.let {
-                    val isWhistle = whistleApi.isWhistle(it)
-                    val isClap = clapApi.isClap(it)
-                    if (whistleResultList.first) numWhistles--
-                    if (clapResultList.first) numClaps--
-                    whistleResultList.removeFirst()
-                    clapResultList.removeFirst()
-                    whistleResultList.add(isWhistle)
-                    clapResultList.add(isClap)
-                    if (isWhistle) numWhistles++
-                    if (isClap) numClaps++
-                    if (numWhistles >= whistlePassScore) {
-                        initBuffer()
-                        onWhistleDetected()
+            while (running) {
+                val currentThread = Thread.currentThread()
+                while (_thread == currentThread) {
+                    val frameBytes = recorder.getFrameBytes()
+                    frameBytes?.let {
+                        val isWhistle = whistleApi.isWhistle(it)
+                        val isClap = clapApi.isClap(it)
+                        if (whistleResultList.first) numWhistles--
+                        if (clapResultList.first) numClaps--
+                        whistleResultList.removeFirst()
+                        clapResultList.removeFirst()
+                        whistleResultList.add(isWhistle)
+                        clapResultList.add(isClap)
+                        if (isWhistle) numWhistles++
+                        if (isClap) numClaps++
+                        if (numWhistles >= whistlePassScore) {
+                            initBuffer()
+                           // onWhistleDetected()
+                        }
+                        if (numClaps >= clapPassScore) {
+                            Log.e("Sound", "Detected")
+                            initBuffer()
+                            onClapDetected()
+                        }
+                    } ?: run {
+                        if (whistleResultList.first) numWhistles--
+                        whistleResultList.removeFirst()
+                        whistleResultList.add(false)
+                        if (clapResultList.first) numClaps--
+                        clapResultList.removeFirst()
+                        clapResultList.add(false)
                     }
-                    if (numClaps >= clapPassScore) {
-                        Log.e("Sound", "Detected")
-                        initBuffer()
-                        onClapDetected()
-                    }
-                } ?: run {
-                    if (whistleResultList.first) numWhistles--
-                    whistleResultList.removeFirst()
-                    whistleResultList.add(false)
-                    if (clapResultList.first) numClaps--
-                    clapResultList.removeFirst()
-                    clapResultList.add(false)
                 }
             }
         } catch (e: Exception) {
@@ -99,12 +109,12 @@ class DetectorThread(
     }
 
     private fun onClapDetected() {
-      //  Log.d("LucTV", "onClapDetected: $onSignalsDetectedListener")
+        //  Log.d("LucTV", "onClapDetected: $onSignalsDetectedListener")
         onSignalsDetectedListener?.onClapDetected()
     }
 
     private fun onWhistleDetected() {
-  //      Log.d("LucTV", "onWhistleDetected: $onSignalsDetectedListener")
+        //      Log.d("LucTV", "onWhistleDetected: $onSignalsDetectedListener")
         onSignalsDetectedListener?.onWhistleDetected()
     }
 

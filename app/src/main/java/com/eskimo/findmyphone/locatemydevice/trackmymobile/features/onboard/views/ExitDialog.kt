@@ -3,6 +3,9 @@ package com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.vie
 
 import android.app.Activity
 import android.app.Dialog
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.DialogExitBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
 
@@ -47,6 +51,12 @@ class ExitDialog(
         }
         binding.buttonPositive.setOnSafeClickListener {
             dismiss()
+            val intent = Intent(activity, AudioDetectService::class.java)
+            val notificationManager =
+                activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancel(333)
+            activity.stopService(intent)
+            activity.startService(intent)
             activity.moveTaskToBack(true)
             activity.finishAffinity()
         }

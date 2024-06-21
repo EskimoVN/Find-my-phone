@@ -9,6 +9,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
 import android.media.MediaPlayer
@@ -32,6 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
+
 class AudioDetectService : Service() {
     private var detectorThread: DetectorThread? = null
     private lateinit var cameraManager: CameraManager
@@ -43,6 +45,7 @@ class AudioDetectService : Service() {
     private var mediaPlayer: MediaPlayer? = null
     private var isPlayingDetect = false
     private var recorderThread: RecorderThread? = null
+    private val powerVolumeButtonReceiver = PowerVolumeButtonReceiver()
     override fun onCreate() {
         super.onCreate()
         recorderThread = RecorderThread();
@@ -65,6 +68,7 @@ class AudioDetectService : Service() {
 
     private fun handleDetected(isClap: Boolean) {
         if (!isPlayingDetect) {
+            registerBroadCastReceiver()
             isPlayingDetect = true
             requestCamera()
             requestVibrate()
@@ -110,6 +114,7 @@ class AudioDetectService : Service() {
         detectorThread?.stopDetection()
         recorderThread = null
         detectorThread = null
+        unregisterBroadCastReceiver()
     }
 
     private fun openAudio() {
@@ -123,6 +128,18 @@ class AudioDetectService : Service() {
             SharedPreferencesManager.getValueVolume().toFloat()
         )// Set looping
         mediaPlayer?.start()
+    }
+
+    private fun registerBroadCastReceiver() {
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_SCREEN_ON)
+        filter.addAction(Intent.ACTION_SCREEN_OFF)
+        filter.addAction("android.media.VOLUME_CHANGED_ACTION")
+        registerReceiver(powerVolumeButtonReceiver, filter)
+    }
+
+    private fun unregisterBroadCastReceiver() {
+        unregisterReceiver(powerVolumeButtonReceiver)
     }
 
 
@@ -150,7 +167,7 @@ class AudioDetectService : Service() {
                 .setContentText("I'm here, tap to close")
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSound(null)
+                .setSound(AppNotificationManager.soundUri)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel =
                     NotificationChannel(
@@ -158,7 +175,7 @@ class AudioDetectService : Service() {
                         channelName,
                         NotificationManager.IMPORTANCE_DEFAULT
                     )
-                channel.setSound(null, null)
+                channel.setSound(AppNotificationManager.soundUri, null)
                 notificationManager.createNotificationChannel(channel)
             }
             notificationManager.notify(333, notificationBuilder.build())
@@ -260,7 +277,7 @@ class AudioDetectService : Service() {
                 "Audio Detect Service Channel",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-            channel.setSound(null, null)
+            channel.setSound(AppNotificationManager.soundUri, null)
             val manager = getSystemService(NotificationManager::class.java)
             manager?.createNotificationChannel(channel)
         }
@@ -276,7 +293,7 @@ class AudioDetectService : Service() {
             .setContentText("Listening for audio events")
             .setSmallIcon(R.drawable.icon_settings)
             .setContentIntent(pendingIntent)
-            .setSound(null)
+            .setSound(AppNotificationManager.soundUri)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setOngoing(true)  // Makes the notification non-dismissible
             .setPriority(NotificationCompat.PRIORITY_HIGH)  // For higher visibility

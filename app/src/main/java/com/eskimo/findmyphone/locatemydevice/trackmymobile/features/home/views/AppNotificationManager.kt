@@ -9,6 +9,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.util.Log
@@ -19,6 +20,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
 
 object AppNotificationManager {
+    val soundUri = Uri.parse("android.resource://com.eskimo.findmyphone.locatemydevice.trackmymobile/raw/audiosilent")
     private const val TAG = "LucTV"
 
     private const val DefaultNotificationChannelId = "default"
@@ -28,13 +30,14 @@ object AppNotificationManager {
     private const val LockscreenWidgetNotificationId = 20000
 
     fun createNotificationChannels(context: Context) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel.
             val name = DefaultNotificationChannelName
             val descriptionText = DefaultNotificationChannelDesc
             val importance = NotificationManager.IMPORTANCE_HIGH
             val mChannel = NotificationChannel(DefaultNotificationChannelId, name, importance)
-            mChannel.setSound(null,null)
+            mChannel.setSound(soundUri,null)
             mChannel.description = descriptionText
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.
@@ -91,7 +94,7 @@ object AppNotificationManager {
                     .setStyle(NotificationCompat.DecoratedCustomViewStyle())
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_CALL)
-                    .setSound(null)
+                    .setSound(AppNotificationManager.soundUri)
                     .setVibrate(longArrayOf(0))
                     .setFullScreenIntent(fullScreenPendingIntent, true)
 
