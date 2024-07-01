@@ -5,6 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ResetServiceBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -13,6 +16,9 @@ class ResetServiceBroadcastReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(333)
         context.stopService(serviceIntent)
-        context.startService(serviceIntent)
+        GlobalScope.launch {
+            delay(1000)
+            context.startService(serviceIntent)
+        }
     }
 }

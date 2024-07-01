@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.BuildConfig
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.R
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
@@ -34,6 +35,8 @@ import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
 import com.tunv.admob.common.openAd.OpenAdConfig
 import com.tunv.admob.common.utils.isNetworkAvailable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class FindPhoneFragment : BaseLazyInflatingFragment() {
     private lateinit var binding: FragmentFindPhoneBinding
@@ -159,8 +162,11 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
 
     private fun startServiceDetect() {
         if (!isServiceRunning(requireContext(), AudioDetectService::class.java)) {
-            val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
-            requireContext().startService(serviceIntent)
+            lifecycleScope.launch {
+                delay(1000)
+                val intent = Intent(requireContext(), AudioDetectService::class.java)
+                requireActivity().startService(intent)
+            }
         }
     }
 

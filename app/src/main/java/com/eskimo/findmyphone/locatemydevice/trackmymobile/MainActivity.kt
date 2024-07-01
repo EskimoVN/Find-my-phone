@@ -8,10 +8,14 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityMainBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.musicg.fingerprint.FingerprintSimilarity
 import com.musicg.wave.Wave
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -37,8 +41,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startAudioService() {
-        val intent = Intent(this, AudioDetectService::class.java)
-        startService(intent)
+        lifecycleScope.launch {
+            delay(1000)
+            val intent = Intent(this@MainActivity, AudioDetectService::class.java)
+            startService(intent)
+        }
     }
 
     private val requestPermissionRecord =

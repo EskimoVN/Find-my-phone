@@ -44,11 +44,11 @@ class AudioDetectService : Service() {
     private var vibrateJob: Job? = null
     private var mediaPlayer: MediaPlayer? = null
     private var isPlayingDetect = false
-    private var recorderThread: RecorderThread? = null
+    private var recorderThread: RecorderThreadJava? = null
     private val powerVolumeButtonReceiver = PowerVolumeButtonReceiver()
     override fun onCreate() {
         super.onCreate()
-        recorderThread = RecorderThread();
+        recorderThread = RecorderThreadJava();
         recorderThread?.startRecording()
         detectorThread = DetectorThread(recorderThread!!)
         detectorThread?.setOnSignalsDetectedListener(object : OnSignalsDetectedListener {
@@ -139,7 +139,10 @@ class AudioDetectService : Service() {
     }
 
     private fun unregisterBroadCastReceiver() {
-        unregisterReceiver(powerVolumeButtonReceiver)
+        try {
+            unregisterReceiver(powerVolumeButtonReceiver)
+        }catch (e : Exception)
+        {}
     }
 
 

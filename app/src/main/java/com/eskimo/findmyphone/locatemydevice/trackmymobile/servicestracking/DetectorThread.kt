@@ -1,13 +1,13 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking
 
-import android.util.Log
+import android.media.AudioFormat
 import com.musicg.api.ClapApi
 import com.musicg.api.WhistleApi
 import com.musicg.wave.WaveHeader
 import java.util.LinkedList
 
 class DetectorThread(
-    private val recorder: RecorderThread,
+    private val recorder: RecorderThreadJava,
 ) : Thread() {
 
     @Volatile
@@ -21,17 +21,17 @@ class DetectorThread(
     private val waveHeader: WaveHeader
     private val whistleApi: WhistleApi
     private val clapApi: ClapApi
-    private val whistleCheckLength = 3
-    private val clapCheckLength = 3
-    private val whistlePassScore = 3
+    private val whistleCheckLength = 1
+        private val clapCheckLength = 1
+    private val whistlePassScore = 1
     private val clapPassScore = 1
     private val whistleResultList = LinkedList<Boolean>()
     private val clapResultList = LinkedList<Boolean>()
 
     init {
-        val audioRecord = recorder.getAudioRecord()
+        val audioRecord = recorder.audioRecord
         val bitsPerSample =
-            if (audioRecord.audioFormat == 2) 16 else if (audioRecord.audioFormat == 3) 8 else 0
+            if (audioRecord.audioFormat == AudioFormat.ENCODING_PCM_16BIT) 16 else if (audioRecord.audioFormat == AudioFormat.ENCODING_PCM_8BIT) 8 else 0
         val channels = if (audioRecord.channelConfiguration == 16) 1 else 0
         waveHeader = WaveHeader().apply {
             setChannels(channels)
@@ -72,7 +72,7 @@ class DetectorThread(
             while (running) {
                 val currentThread = Thread.currentThread()
                 while (_thread == currentThread) {
-                    val frameBytes = recorder.getFrameBytes()
+                    val frameBytes = recorder.frameBytes
                     frameBytes?.let {
                         val isWhistle = whistleApi.isWhistle(it)
                         val isClap = clapApi.isClap(it)
@@ -88,8 +88,8 @@ class DetectorThread(
                             initBuffer()
                            // onWhistleDetected()
                         }
+                       //Log.d("LucTV", "run: $numClaps")
                         if (numClaps >= clapPassScore) {
-                            Log.e("Sound", "Detected")
                             initBuffer()
                             onClapDetected()
                         }

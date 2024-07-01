@@ -7,11 +7,14 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.tunv.admob.common.openAd.OpenAdConfig
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class FindPhoneLockScreenActivity : BaseActivity() {
     private lateinit var binding: ActivityFindPhoneLockScreenBinding
@@ -52,8 +55,11 @@ class FindPhoneLockScreenActivity : BaseActivity() {
     }
 
     private fun startServiceDetect() {
-        val serviceIntent = Intent(this, AudioDetectService::class.java)
-        startService(serviceIntent)
+        lifecycleScope.launch {
+            delay(1000)
+            val intent = Intent(this@FindPhoneLockScreenActivity, AudioDetectService::class.java)
+            startService(intent)
+        }
     }
 
 

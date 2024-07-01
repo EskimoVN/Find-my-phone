@@ -4,6 +4,10 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PowerVolumeButtonReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -12,6 +16,9 @@ class PowerVolumeButtonReceiver : BroadcastReceiver() {
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(333)
         context.stopService(serviceIntent)
-        context.startService(serviceIntent)
+        GlobalScope.launch {
+            delay(1000)
+            context.startService(intent)
+        }
     }
 }

@@ -1,12 +1,14 @@
 package com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking
 
 import android.annotation.SuppressLint
+import android.media.AudioFormat
 import android.media.AudioRecord
+import android.util.Log
 
 @SuppressLint("MissingPermission")
 class RecorderThread : Thread() {
     private val audioEncoding = 2
-    private val channelConfiguration = 16
+    private val channelConfiguration = AudioFormat.CHANNEL_IN_MONO
     private val frameByteSize = 2048
     private val sampleRate = 44100
     private var audioRecord: AudioRecord
@@ -54,7 +56,13 @@ class RecorderThread : Thread() {
             sum += Math.abs(value.toInt())
         }
         val averageAmplitude = sum / (frameByteSize / 2)
-        return if (averageAmplitude < 30) null else buffer
+
+        return if (averageAmplitude < 400) {
+            null
+        } else{
+            Log.d("LucTV", "getFrameBytes: "+averageAmplitude)
+            buffer
+        }
     }
 
     override fun run() {
