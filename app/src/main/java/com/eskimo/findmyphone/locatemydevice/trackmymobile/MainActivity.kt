@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityMainBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.sdptracking.DSPDetectService
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.musicg.fingerprint.FingerprintSimilarity
 import com.musicg.wave.Wave
@@ -42,8 +43,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun startAudioService() {
         lifecycleScope.launch {
-            delay(1000)
-            val intent = Intent(this@MainActivity, AudioDetectService::class.java)
+            delay(300)
+            val intent = Intent(this@MainActivity, DSPDetectService::class.java)
             startService(intent)
         }
     }

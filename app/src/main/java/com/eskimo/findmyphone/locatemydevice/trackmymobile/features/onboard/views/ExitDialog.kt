@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.DialogExitBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.sdptracking.DSPDetectService
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.sdptracking.ServiceManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.nativeAds.NativeAdsUtil
@@ -51,12 +53,11 @@ class ExitDialog(
         }
         binding.buttonPositive.setOnSafeClickListener {
             dismiss()
-            val intent = Intent(activity, AudioDetectService::class.java)
+            val intent = Intent(activity, DSPDetectService::class.java)
             val notificationManager =
                 activity.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.cancel(333)
-            activity.stopService(intent)
-            activity.startService(intent)
+            ServiceManager.dspDetectService?.resetDataService()
             activity.moveTaskToBack(true)
             activity.finishAffinity()
         }

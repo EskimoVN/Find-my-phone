@@ -169,6 +169,7 @@ android {
 
 dependencies {
     implementation(files("libs/musicg-1.4.2.0.jar"))
+    implementation(files("libs/TarsosDSP-Android-latest-bin.jar"))
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

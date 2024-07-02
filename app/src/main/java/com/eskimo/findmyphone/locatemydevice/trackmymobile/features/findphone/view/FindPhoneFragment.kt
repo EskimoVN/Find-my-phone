@@ -29,6 +29,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.FragmentF
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.models.FlashModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.findphone.viewmodels.FindPhoneViewModel
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.setting.views.SettingActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.sdptracking.DSPDetectService
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.google.android.gms.ads.nativead.NativeAd
 import com.tunv.admob.common.callback.AdCallBack
@@ -161,10 +162,10 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
 
 
     private fun startServiceDetect() {
-        if (!isServiceRunning(requireContext(), AudioDetectService::class.java)) {
+        if (!isServiceRunning(requireContext(), DSPDetectService::class.java)) {
             lifecycleScope.launch {
                 delay(1000)
-                val intent = Intent(requireContext(), AudioDetectService::class.java)
+                val intent = Intent(requireContext(), DSPDetectService::class.java)
                 requireActivity().startService(intent)
             }
         }
@@ -174,7 +175,7 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
         val notificationManager =
             requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(333)
-        val serviceIntent = Intent(requireContext(), AudioDetectService::class.java)
+        val serviceIntent = Intent(requireContext(), DSPDetectService::class.java)
         requireContext().stopService(serviceIntent)
     }
 

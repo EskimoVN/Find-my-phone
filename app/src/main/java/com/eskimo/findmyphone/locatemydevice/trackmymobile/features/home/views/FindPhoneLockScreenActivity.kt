@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.setOnSafeClickListener
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivityFindPhoneLockScreenBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.sdptracking.ServiceManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.AudioDetectService
 import com.tunv.admob.common.openAd.OpenAdConfig
 import kotlinx.coroutines.delay
@@ -47,11 +48,7 @@ class FindPhoneLockScreenActivity : BaseActivity() {
     }
 
     private fun endServiceDetect() {
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(333)
-        val serviceIntent = Intent(this, AudioDetectService::class.java)
-        stopService(serviceIntent)
+        ServiceManager.dspDetectService?.resetDataService()
     }
 
     private fun startServiceDetect() {
