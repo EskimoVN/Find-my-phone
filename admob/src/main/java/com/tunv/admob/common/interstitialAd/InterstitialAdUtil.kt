@@ -2,14 +2,16 @@ package com.tunv.admob.common.interstitialAd
 
 import android.app.Activity
 import android.content.Context
-import com.tunv.admob.common.callback.AdCallBack
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.OnPaidEventListener
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.openAd.OpenAdConfig
+import com.tunv.admob.common.utils.FirebaseAnalyticsUtil
 import com.tunv.admob.common.utils.isNetworkAvailable
 
 
@@ -45,6 +47,9 @@ object InterstitialAdUtil {
 
     fun showInterstitial(activity: Activity, adCallBack: AdCallBack) {
         if (interstitialAd != null) {
+            interstitialAd?.onPaidEventListener = OnPaidEventListener { paid ->
+                FirebaseAnalyticsUtil.logPaidAdImpression(activity, paid)
+            }
             interstitialAd?.fullScreenContentCallback =
                 object : FullScreenContentCallback() {
                     override fun onAdDismissedFullScreenContent() {

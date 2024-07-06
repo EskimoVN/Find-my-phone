@@ -8,9 +8,11 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.OnPaidEventListener
 import com.tunv.admob.R
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.openAd.OpenAdConfig
+import com.tunv.admob.common.utils.FirebaseAnalyticsUtil
 import com.tunv.admob.common.utils.isNetworkAvailable
 
 object BannerAdUtil {
@@ -34,6 +36,9 @@ object BannerAdUtil {
                     adContainer.removeAllViews()
                     adCallBack.onAdLoaded()
                     adContainer.addView(adView)
+                    adView.onPaidEventListener = OnPaidEventListener { paid ->
+                        FirebaseAnalyticsUtil.logPaidAdImpression(context,paid)
+                    }
                 }
 
                 override fun onAdClicked() {

@@ -8,6 +8,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import com.tunv.admob.common.callback.AdCallBack
 import com.tunv.admob.common.interstitialAd.InterstitialAdUtil
+import com.tunv.admob.common.utils.FirebaseAnalyticsUtil
 import com.tunv.admob.common.utils.isNetworkAvailable
 
 object OpenAdConfig {
@@ -38,6 +39,9 @@ object OpenAdConfig {
                 val loadCallback: AppOpenAd.AppOpenAdLoadCallback =
                     object : AppOpenAd.AppOpenAdLoadCallback() {
                         override fun onAdLoaded(ad: AppOpenAd) {
+                            ad.setOnPaidEventListener { paid ->
+                                FirebaseAnalyticsUtil.logPaidAdImpression(activity, paid)
+                            }
                             isOpenAdLoading = false
                             adCallBack?.onAdLoaded()
                             ad.fullScreenContentCallback = object : FullScreenContentCallback() {

@@ -18,6 +18,7 @@ import com.tunv.admob.common.interstitialAd.InterstitialAdUtil
 import com.tunv.admob.common.openAd.OpenAdConfig.isOpenAdLoading
 import com.tunv.admob.common.openAd.OpenAdConfig.isOpenAdShowing
 import com.tunv.admob.common.openAd.OpenAdConfig.isOpenAdStop
+import com.tunv.admob.common.utils.FirebaseAnalyticsUtil
 import com.tunv.admob.common.utils.LoadingUtils
 import com.tunv.admob.common.utils.isNetworkAvailable
 import com.tunv.admob.common.utils.showLog
@@ -93,6 +94,14 @@ class OpenAdManager(
                             override fun onAdLoaded(ad: AppOpenAd) {
                                 isOpenAdLoading = false
                                 openAd = ad
+                                currentActivity?.let { activity ->
+                                    openAd?.setOnPaidEventListener { paid ->
+                                        FirebaseAnalyticsUtil.logPaidAdImpression(
+                                            activity,
+                                            paid
+                                        )
+                                    }
+                                }
                                 showOpenAd()
                             }
 

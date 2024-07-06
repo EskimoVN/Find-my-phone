@@ -45,4 +45,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.1.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }

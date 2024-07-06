@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.tunv.admob.R
 import com.tunv.admob.common.callback.AdCallBack
+import com.tunv.admob.common.utils.FirebaseAnalyticsUtil
 import com.tunv.admob.common.utils.isNetworkAvailable
 
 object NativeAdsUtil {
@@ -26,15 +28,15 @@ object NativeAdsUtil {
         adView.apply {
             if (findViewById<View>(R.id.ad_media) != null) mediaView = findViewById(R.id.ad_media)
             headlineView = findViewById(R.id.ad_headline)
-//            bodyView = findViewById(R.id.ad_body)
-            //   try {
-//                starRatingView = findViewById(R.id.ad_stars)
-//                if (findViewById<View>(R.id.ad_advertiser) != null)
-//                    advertiserView = findViewById(R.id.ad_advertiser)
-            //    } catch (ex: Exception) {
-            //
-            //}
-//            callToActionView = findViewById(R.id.ad_call_to_action_new)
+            bodyView = findViewById(R.id.ad_body)
+               try {
+                starRatingView = findViewById(R.id.ad_stars)
+                if (findViewById<View>(R.id.ad_advertiser) != null)
+                    advertiserView = findViewById(R.id.ad_advertiser)
+                } catch (ex: Exception) {
+
+            }
+            callToActionView = findViewById(R.id.ad_call_to_action)
             iconView = findViewById(R.id.ad_app_icon)
             (headlineView as TextView).text = nativeAd.headline
             nativeAd.mediaContent?.let {
@@ -51,28 +53,28 @@ object NativeAdsUtil {
         } ?: run {
             adView.starRatingView?.visibility = View.GONE
         }
-//        nativeAd.body?.let { body ->
-//            adView.bodyView?.visibility = View.VISIBLE
-//            (adView.bodyView as TextView).text = body
-//        } ?: run {
-//            adView.bodyView?.visibility = View.INVISIBLE
-//        }
+        nativeAd.body?.let { body ->
+            adView.bodyView?.visibility = View.VISIBLE
+            (adView.bodyView as TextView).text = body
+        } ?: run {
+            adView.bodyView?.visibility = View.INVISIBLE
+        }
 
-//        nativeAd.advertiser?.let { advertiser ->
-//            adView.advertiserView?.visibility = View.VISIBLE
-//            if (adView.advertiserView != null) {
-//                (adView.advertiserView as TextView).text = advertiser
-//            }
-//        } ?: run {
-//            adView.advertiserView?.visibility = View.GONE
-//        }
-//
-//        nativeAd.callToAction?.let { callToAction ->
-//            adView.callToActionView?.visibility = View.VISIBLE
-//            (adView.callToActionView as Button).text = callToAction
-//        } ?: run {
-//            adView.callToActionView?.visibility = View.INVISIBLE
-//        }
+        nativeAd.advertiser?.let { advertiser ->
+            adView.advertiserView?.visibility = View.VISIBLE
+            if (adView.advertiserView != null) {
+                (adView.advertiserView as TextView).text = advertiser
+            }
+        } ?: run {
+            adView.advertiserView?.visibility = View.GONE
+        }
+
+        nativeAd.callToAction?.let { callToAction ->
+            adView.callToActionView?.visibility = View.VISIBLE
+            (adView.callToActionView as Button).text = callToAction
+        } ?: run {
+            adView.callToActionView?.visibility = View.INVISIBLE
+        }
 
         nativeAd.icon?.let {
             adView.iconView?.visibility = View.VISIBLE
@@ -165,6 +167,9 @@ object NativeAdsUtil {
         @LayoutRes nativeAdView: Int,
         adListener: AdCallBack? = null
     ) {
+        nativeAd.setOnPaidEventListener { paid ->
+            FirebaseAnalyticsUtil.logPaidAdImpression(context, paid)
+        }
         adContainerView.removeAllViews()
         val nativeView = LayoutInflater.from(context).inflate(nativeAdView, null, false)
         if (nativeView is NativeAdView) {
