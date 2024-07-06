@@ -21,8 +21,8 @@ class ClapDetector(private val isDebug: Boolean = true) {
         action: () -> (Unit)
     ) {
         dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050, 1024, 0)
-        val threshold = 12.0
-        val sensitivity = 50.0
+        val threshold = 8.0
+        val sensitivity = 35.0
         val mPercussionDetector = PercussionOnsetDetector(
             22050f, 1024,
             OnsetHandler { time, salience ->

@@ -51,4 +51,8 @@
     <string name="please_click_back_again_to_exit">Please click BACK again to exit</string>
     <string name="text_turn_off">Turn me off</string>
     <string name="text_hear_you">I heard you</string>
+    <string name="text_find_clap">Xin chào, tôi vừa lắng nghe tiếng vỗ tay</string>
+    <string name="text_click_to_close">Nhấn vào đây để đóng âm thanh</string>
+    <string name="text_app_name">EsFinder</string>
+    <string name="text_audio_is_listening">Đang lắng nghe âm thanh</string>
 </resources>

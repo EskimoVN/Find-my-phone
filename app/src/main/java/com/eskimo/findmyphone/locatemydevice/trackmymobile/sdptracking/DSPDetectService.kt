@@ -25,6 +25,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferen
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.getNameAndResourceRingTone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.AppNotificationManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.servicestracking.ResetServiceBroadcastReceiver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -153,8 +154,8 @@ class DSPDetectService : Service() {
                 context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val notificationBuilder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.icon_power)
-                .setContentTitle("Hi, phone clapped")
-                .setContentText("I'm here, tap to close")
+                .setContentTitle(getString(R.string.text_find_clap))
+                .setContentText(getString(R.string.text_click_to_close))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -180,7 +181,7 @@ class DSPDetectService : Service() {
             val channel = NotificationChannel(
                 "AudioDetectServiceChannel",
                 "Audio Detect Service Channel",
-                NotificationManager.IMPORTANCE_HIGH
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             channel.setSound(AppNotificationManager.soundUri, null)
             val manager = getSystemService(NotificationManager::class.java)
@@ -189,13 +190,13 @@ class DSPDetectService : Service() {
     }
 
     private fun createNotification(): Notification {
-        val notificationIntent = Intent(this, HomeActivity::class.java)
+        val notificationIntent = Intent(this, SplashActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(this, "AudioDetectServiceChannel")
-            .setContentTitle("Audio Detect Service")
-            .setContentText("Listening for audio events")
+            .setContentTitle(getString(R.string.text_app_name))
+            .setContentText(getString(R.string.text_audio_is_listening))
             .setSmallIcon(android.R.drawable.ic_lock_idle_charging)
             .setContentIntent(pendingIntent)
             .setSound(AppNotificationManager.soundUri)

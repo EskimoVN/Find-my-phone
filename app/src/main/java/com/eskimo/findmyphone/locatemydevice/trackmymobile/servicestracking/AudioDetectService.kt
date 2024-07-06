@@ -26,6 +26,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferen
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.getNameAndResourceRingTone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.AppNotificationManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -287,7 +288,7 @@ class AudioDetectService : Service() {
     }
 
     private fun createNotification(): Notification {
-        val notificationIntent = Intent(this, HomeActivity::class.java)
+        val notificationIntent = Intent(this, SplashActivity::class.java)
         val pendingIntent =
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
