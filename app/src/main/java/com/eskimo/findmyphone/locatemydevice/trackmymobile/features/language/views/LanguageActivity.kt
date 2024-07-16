@@ -149,6 +149,7 @@ class LanguageActivity : BaseActivity() {
                 }
 
             }
+            SharedPreferencesManager.setAppLanguage(languageSelected)
             finish()
         }
         binding.buttonBack.setOnSafeClickListener {
