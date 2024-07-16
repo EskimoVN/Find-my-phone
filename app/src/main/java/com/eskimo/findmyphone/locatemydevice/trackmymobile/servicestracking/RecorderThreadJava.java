@@ -69,7 +69,6 @@ public byte[] getFrameBytes() {
     if (averageAbsValue < 280    ) {
         return null;
     }else {
-        Log.d("LucTV", "getFrameBytes: "+averageAbsValue);
         return buffer;
     }
 

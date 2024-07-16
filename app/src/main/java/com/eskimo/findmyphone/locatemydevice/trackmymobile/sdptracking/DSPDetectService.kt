@@ -55,15 +55,12 @@ class DSPDetectService : Service() {
         createNotificationChannel()
         val notification = createNotification()
         startForeground(1, notification)
-        Log.d("LucTV", "onCreate: ")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("LucTV", "onStartCommand: ")
         try {
             startRecording()
         }catch (e : Exception){
-            Log.d("LucTV", "onStartCommand: $e")
         }
 
         return START_STICKY
@@ -172,7 +169,6 @@ class DSPDetectService : Service() {
             }
             notificationManager.notify(333, notificationBuilder.build())
         } catch (e: Exception) {
-            Log.d("LucTV", "sendNotification: ")
         }
     }
 

@@ -153,10 +153,8 @@ class FindPhoneFragment : BaseLazyInflatingFragment() {
     private val requestPermissionRecord =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                Log.d("LucTV", "Access record success ")
                 startServiceDetect()
             } else {
-                Log.d("LucTV", "Access record fail ")
             }
         }
 

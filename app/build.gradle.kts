@@ -21,10 +21,10 @@ android {
     }
     signingConfigs {
         register("release") {
-            storeFile = file("../keys/keystore")
-            storePassword = "eskimo@2024"
+            storeFile = file("../keys/keystore-eskimo")
+            storePassword = "eskimo@123"
             keyAlias = "key0"
-            keyPassword = "eskimo@2024"
+            keyPassword = "eskimo@123"
         }
     }
     buildTypes {

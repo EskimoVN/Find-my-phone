@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         ) {
             requestPermissionRecord.launch(android.Manifest.permission.RECORD_AUDIO)
         } else {
-            Log.d("LucTV", "Access record success ")
             startAudioService()
         }
     }
@@ -52,10 +51,8 @@ class MainActivity : AppCompatActivity() {
     private val requestPermissionRecord =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                Log.d("LucTV", "Access record success ")
                 startAudioService()
             } else {
-                Log.d("LucTV", "Access record fail ")
             }
         }
 

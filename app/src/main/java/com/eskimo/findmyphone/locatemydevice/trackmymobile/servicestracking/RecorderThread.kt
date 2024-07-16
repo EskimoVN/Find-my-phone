@@ -60,7 +60,6 @@ class RecorderThread : Thread() {
         return if (averageAmplitude < 400) {
             null
         } else{
-            Log.d("LucTV", "getFrameBytes: "+averageAmplitude)
             buffer
         }
     }
