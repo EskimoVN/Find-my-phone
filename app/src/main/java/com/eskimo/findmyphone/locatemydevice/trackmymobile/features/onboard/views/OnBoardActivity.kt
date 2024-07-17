@@ -40,7 +40,7 @@ class OnBoardActivity : BaseActivity() {
     private fun preloadNativeAd() {
         if (MyApplication.getApplication().nativeHomeConfig && this.isNetworkAvailable()) {
             NativeAdsUtil.loadNativeAd(
-                nativeId = BuildConfig.ad_native_language,
+                nativeId = BuildConfig.ad_native_home,
                 context = this,
                 adListener = object : AdCallBack() {
                     override fun onNativeAdLoad(nativeAd: NativeAd) {
