@@ -8,6 +8,7 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.ui.BaseActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.databinding.ActivitySplashBinding
+import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.antitheft.PocketSensorService
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.language.views.LanguageActivity
 import com.google.android.gms.ads.nativead.NativeAd
@@ -152,7 +153,7 @@ class SplashActivity : BaseActivity() {
             startActivity(
                 Intent(
                     this@SplashActivity,
-                    HomeActivity::class.java
+                    PocketSensorService::class.java
                 )
             )
         } else {

@@ -14,7 +14,7 @@ android {
         applicationId = "com.eskimo.findmyphone.locatemydevice.trackmymobile"
         minSdk = 25
         targetSdk = 34
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -22,9 +22,9 @@ android {
     signingConfigs {
         register("release") {
             storeFile = file("../keys/keystore-eskimo")
-            storePassword = "eskimo@123"
+            storePassword = "eskimo123"
             keyAlias = "key0"
-            keyPassword = "eskimo@123"
+            keyPassword = "eskimo123"
         }
     }
     buildTypes {
@@ -144,7 +144,7 @@ android {
             buildConfigField(
                 "String",
                 "ad_native_home",
-                "\"ca-app-pub-1848319716441980/2384202059\""
+                "\"ca-app-pub-1848319716441980/2110174199\""
             )
             buildConfigField(
                 "String",
