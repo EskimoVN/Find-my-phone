@@ -10,6 +10,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.8.0" apply false
     kotlin("jvm") version "1.5.21"
     id("com.android.library") version "8.1.0" apply false
+    id("com.google.firebase.crashlytics") version "3.0.2" apply false
 }
 val isWindows: Boolean by lazy {
     Os.isFamily(Os.FAMILY_WINDOWS)

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -144,7 +145,7 @@ android {
             buildConfigField(
                 "String",
                 "ad_native_home",
-                "\"ca-app-pub-1848319716441980/2384202059\""
+                "\"ca-app-pub-1848319716441980/2110174199\""
             )
             buildConfigField(
                 "String",
@@ -190,5 +191,13 @@ dependencies {
     implementation("com.google.android.gms:play-services-ads:23.1.0")
     implementation("androidx.activity:activity-ktx:1.9.0")
     implementation("androidx.fragment:fragment-ktx:1.7.1")
+    //Crash
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
 }

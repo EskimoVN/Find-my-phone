@@ -10,6 +10,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
 import android.media.MediaPlayer
@@ -25,7 +26,6 @@ import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.MyApplication
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.SharedPreferencesManager
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.common.extensions.Extensions.getNameAndResourceRingTone
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.AppNotificationManager
-import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.home.views.HomeActivity
 import com.eskimo.findmyphone.locatemydevice.trackmymobile.features.onboard.views.SplashActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,7 +64,14 @@ class AudioDetectService : Service() {
         })
         createNotificationChannel()
         val notification = createNotification()
-        startForeground(1, notification)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(1, notification)
+        } else {
+            startForeground(
+                1, notification, FOREGROUND_SERVICE_TYPE_MICROPHONE
+            )
+        }
+
     }
 
     private fun handleDetected(isClap: Boolean) {
@@ -120,8 +127,7 @@ class AudioDetectService : Service() {
 
     private fun openAudio() {
         mediaPlayer = MediaPlayer.create(
-            this,
-            SharedPreferencesManager.getIdRingTone().getNameAndResourceRingTone().second
+            this, SharedPreferencesManager.getIdRingTone().getNameAndResourceRingTone().second
         ) // replace 'your_audio_file' with the actual file name
         mediaPlayer?.isLooping = true
         mediaPlayer?.setVolume(
@@ -142,8 +148,8 @@ class AudioDetectService : Service() {
     private fun unregisterBroadCastReceiver() {
         try {
             unregisterReceiver(powerVolumeButtonReceiver)
-        }catch (e : Exception)
-        {}
+        } catch (e: Exception) {
+        }
     }
 
 
@@ -165,20 +171,16 @@ class AudioDetectService : Service() {
             val channelName = "Channel Name"
             val notificationManager =
                 context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.icon_power)
-                .setContentTitle("Hi, phone clapped")
-                .setContentText("I'm here, tap to close")
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setSound(AppNotificationManager.soundUri)
+            val notificationBuilder =
+                NotificationCompat.Builder(context, channelId).setSmallIcon(R.drawable.icon_power)
+                    .setContentTitle("Hi, phone clapped").setContentText("I'm here, tap to close")
+                    .setContentIntent(pendingIntent)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setSound(AppNotificationManager.soundUri)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val channel =
-                    NotificationChannel(
-                        channelId,
-                        channelName,
-                        NotificationManager.IMPORTANCE_DEFAULT
-                    )
+                val channel = NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+                )
                 channel.setSound(AppNotificationManager.soundUri, null)
                 notificationManager.createNotificationChannel(channel)
             }
@@ -227,8 +229,7 @@ class AudioDetectService : Service() {
                 getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
             vibratorManager.defaultVibrator
         } else {
-            @Suppress("DEPRECATION")
-            getSystemService(VIBRATOR_SERVICE) as Vibrator
+            @Suppress("DEPRECATION") getSystemService(VIBRATOR_SERVICE) as Vibrator
         }
         if (SharedPreferencesManager.getVibrate()) {
             startVibrating()
@@ -293,15 +294,11 @@ class AudioDetectService : Service() {
             PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(this, "AudioDetectServiceChannel")
-            .setContentTitle("Audio Detect Service")
-            .setContentText("Listening for audio events")
-            .setSmallIcon(R.drawable.icon_settings)
-            .setContentIntent(pendingIntent)
-            .setSound(AppNotificationManager.soundUri)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentTitle("Audio Detect Service").setContentText("Listening for audio events")
+            .setSmallIcon(R.drawable.icon_settings).setContentIntent(pendingIntent)
+            .setSound(AppNotificationManager.soundUri).setPriority(NotificationCompat.PRIORITY_HIGH)
             .setOngoing(true)  // Makes the notification non-dismissible
             .setPriority(NotificationCompat.PRIORITY_HIGH)  // For higher visibility
-            .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .build()
+            .setCategory(NotificationCompat.CATEGORY_SERVICE).build()
     }
 }
